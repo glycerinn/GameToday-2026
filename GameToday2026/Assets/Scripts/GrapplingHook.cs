@@ -55,15 +55,24 @@ public class GrapplingHook : MonoBehaviour
 
         hookPosition = hammerTip.position;
 
-        Vector3 mouseScreen = Input.mousePosition;
+        // Create a ray from the camera through the mouse cursor
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-        // Distance from camera to hammer
-        mouseScreen.z = Mathf.Abs(cam.transform.position.z - hammerTip.position.z);
+        // Create a plane at the hammer's Z position
+        Plane playerPlane = new Plane(Vector3.forward, hammerTip.position);
 
-        Vector3 mouseWorld = cam.ScreenToWorldPoint(mouseScreen);
+        // Find where the mouse ray intersects that plane
+        if (playerPlane.Raycast(ray, out float distance))
+        {
+            Vector3 mouseWorld = ray.GetPoint(distance);
 
-        // Get direction from hammer tip toward mouse
-        hookDirection = (mouseWorld - hammerTip.position).normalized;
+            // Direction from hammer tip to mouse
+            hookDirection = (mouseWorld - hammerTip.position).normalized;
+
+            // Keep movement strictly on the player's X/Y plane
+            hookDirection.z = 0f;
+            hookDirection.Normalize();
+        }
 
         rope.enabled = true;
     }
@@ -76,7 +85,7 @@ public class GrapplingHook : MonoBehaviour
         UpdateRope();
 
         // Check collision
-        Collider[] hits = Physics.OverlapSphere(hookPosition, 0.1f);
+        Collider[] hits = Physics.OverlapSphere(hookPosition, 0.02f);
 
         foreach (Collider hit in hits)
         {
@@ -136,6 +145,6 @@ public class GrapplingHook : MonoBehaviour
 
         direction.Normalize();
 
-        playerRb.AddForce(direction * pullForce, ForceMode.Force);
+        playerRb.AddForce(direction * pullForce, ForceMode.Acceleration);
     }
 }
