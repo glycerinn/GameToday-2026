@@ -27,9 +27,16 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !firing && !attached)
+        if (Input.GetMouseButtonDown(1))
         {
-            FireHook();
+            if (!firing && !attached)
+            {
+                FireHook();
+            }
+            else if (attached)
+            {
+                Detach();
+            }
         }
 
         if (firing)
@@ -42,11 +49,6 @@ public class GrapplingHook : MonoBehaviour
             UpdateRope();
             PullPlayer();
         }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            Detach();
-        }
     }
 
     void FireHook()
@@ -54,22 +56,14 @@ public class GrapplingHook : MonoBehaviour
         firing = true;
 
         hookPosition = hammerTip.position;
-
-        // Create a ray from the camera through the mouse cursor
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
-        // Create a plane at the hammer's Z position
         Plane playerPlane = new Plane(Vector3.forward, hammerTip.position);
-
-        // Find where the mouse ray intersects that plane
         if (playerPlane.Raycast(ray, out float distance))
         {
             Vector3 mouseWorld = ray.GetPoint(distance);
 
             // Direction from hammer tip to mouse
             hookDirection = (mouseWorld - hammerTip.position).normalized;
-
-            // Keep movement strictly on the player's X/Y plane
             hookDirection.z = 0f;
             hookDirection.Normalize();
         }
@@ -80,11 +74,7 @@ public class GrapplingHook : MonoBehaviour
     void MoveHook()
     {
         hookPosition += hookDirection * hookSpeed * Time.deltaTime;
-
-        // Move hook visually
         UpdateRope();
-
-        // Check collision
         Collider[] hits = Physics.OverlapSphere(hookPosition, 0.02f);
 
         foreach (Collider hit in hits)
@@ -96,7 +86,6 @@ public class GrapplingHook : MonoBehaviour
             }
         }
 
-        // Too far
         if (Vector3.Distance(hammerTip.position, hookPosition) > maxDistance)
         {
             CancelHook();
