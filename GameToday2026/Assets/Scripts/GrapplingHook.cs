@@ -13,6 +13,9 @@ public class GrapplingHook : MonoBehaviour
     public float maxDistance = 20f;
     public float pullForce = 20f;
 
+    [Header("Enemy Detection")]
+    public float enemyHitRadius = 0.2f;
+
     private bool firing;
     private bool attached;
 
@@ -56,13 +59,15 @@ public class GrapplingHook : MonoBehaviour
         firing = true;
 
         hookPosition = hammerTip.position;
+
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
         Plane playerPlane = new Plane(Vector3.forward, hammerTip.position);
+
         if (playerPlane.Raycast(ray, out float distance))
         {
             Vector3 mouseWorld = ray.GetPoint(distance);
 
-            // Direction from hammer tip to mouse
             hookDirection = (mouseWorld - hammerTip.position).normalized;
             hookDirection.z = 0f;
             hookDirection.Normalize();
@@ -74,19 +79,34 @@ public class GrapplingHook : MonoBehaviour
     void MoveHook()
     {
         hookPosition += hookDirection * hookSpeed * Time.deltaTime;
+
         UpdateRope();
-        Collider[] hits = Physics.OverlapSphere(hookPosition, 0.02f);
+
+        Collider[] hits = Physics.OverlapSphere(hookPosition, enemyHitRadius);
 
         foreach (Collider hit in hits)
         {
+            Enemy enemy =
+                hit.GetComponentInParent<Enemy>();
+
+            if (enemy != null)
+            {
+                enemy.PullToPlayer();
+                CancelHook();
+                return;
+            }
+
             if (hit.CompareTag("Ground"))
             {
                 AttachHook(hookPosition);
+
                 return;
             }
         }
 
-        if (Vector3.Distance(hammerTip.position, hookPosition) > maxDistance)
+        if (Vector3.Distance(
+                hammerTip.position,
+                hookPosition) > maxDistance)
         {
             CancelHook();
         }
@@ -133,7 +153,6 @@ public class GrapplingHook : MonoBehaviour
             return;
 
         direction.Normalize();
-
         playerRb.AddForce(direction * pullForce, ForceMode.Acceleration);
     }
 }

@@ -175,8 +175,8 @@ Transform:
   m_GameObject: {fileID: 121142703}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.716, y: 0.9848, z: -9.1399}
-  m_LocalScale: {x: 0.050077535, y: 1.5649208, z: 0.8226182}
+  m_LocalPosition: {x: -0.8554, y: 0.9848, z: -9.1399}
+  m_LocalScale: {x: 0.41196847, y: 1.5649208, z: 0.8226182}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -224,7 +224,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 4
+    FieldOfView: 6
     OrthographicSize: 5
     NearClipPlane: 7
     FarClipPlane: 1000
@@ -251,7 +251,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134483030}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.030887414, y: 0, z: 0, w: 0.99952286}
+  m_LocalRotation: {x: 0.026264185, y: 0, z: 0, w: 0.99965507}
   m_LocalPosition: {x: 0, y: 1.0506295, z: -18.488585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -283,7 +283,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   TiltAxis:
-    Value: 3.54
+    Value: 3.01
     Center: 0
     Range: {x: -70, y: 70}
     Wrap: 0
@@ -341,8 +341,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   enemyPrefab: {fileID: 2331333494245029229, guid: bf168d70eaab2b84aacc2381b5b5ed92, type: 3}
-  spawnWidth: 2
-  spawnHeight: 2
+  spawnWidth: 1.35
+  spawnHeight: 1
   player: {fileID: 1471674938}
   minimumPlayerDistance: 10
   enemyCount: 5
@@ -355,7 +355,7 @@ Transform:
   m_GameObject: {fileID: 228223912}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.11, y: 1.26, z: -9}
+  m_LocalPosition: {x: 0.012, y: 1.26, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -422,7 +422,7 @@ Camera:
     height: 1
   near clip plane: 7
   far clip plane: 1000
-  field of view: 4
+  field of view: 6
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -448,7 +448,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.030887414, y: 0, z: 0, w: 0.99952286}
+  m_LocalRotation: {x: 0.026264185, y: 0, z: 0, w: 0.99965507}
   m_LocalPosition: {x: 0, y: 1.0506295, z: -18.488585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 947808127}
   - component: {fileID: 947808130}
   - component: {fileID: 947808129}
+  - component: {fileID: 947808131}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -796,7 +797,8 @@ MonoBehaviour:
   minDistance: 0
   maxDistance: 0.15
   distanceMultiplier: 0.5
-  pushForce: 2
+  pushForce: 1.5
+  swingThreshold: 1
 --- !u!212 &947808128
 SpriteRenderer:
   serializedVersion: 2
@@ -875,8 +877,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5675491, y: 9.999999, z: 1.0753868}
-  m_Center: {x: 0.08711026, y: -0.0000019509243, z: -0.0783616}
+  m_Size: {x: 1.5675491, y: 9.790684, z: 1.0753868}
+  m_Center: {x: 0.08711023, y: -0.10463334, z: -0.0783616}
 --- !u!114 &947808130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -897,6 +899,27 @@ MonoBehaviour:
   bulletcount: 0
   tilReload: 5
   isReloading: 0
+--- !u!65 &947808131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947808125}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.2303813, y: 1.0500077, z: 0.8992854}
+  m_Center: {x: 0.059054088, y: 4.390256, z: -0.02542142}
 --- !u!1 &1030248656
 GameObject:
   m_ObjectHideFlags: 0
@@ -1193,6 +1216,7 @@ GameObject:
   - component: {fileID: 1529297705}
   - component: {fileID: 1529297706}
   - component: {fileID: 1529297707}
+  - component: {fileID: 1529297708}
   m_Layer: 0
   m_Name: Tip
   m_TagString: Untagged
@@ -1235,7 +1259,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529297704}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a8bd8114c440f8c4eb419fc16a250c84, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1247,8 +1271,35 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1208327, y: 0.89368093, z: 0.5897846}
-  m_Center: {x: 0.006848134, y: -0.053159565, z: 0.03069038}
+  m_Size: {x: 3.191196, y: 1, z: 1}
+  m_Center: {x: 0.014299934, y: 0, z: 0}
+--- !u!54 &1529297708
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529297704}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
 --- !u!1 &1656687094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,8 +1356,8 @@ Transform:
   m_GameObject: {fileID: 1656687094}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.725, y: 1.1271, z: -9.1399}
-  m_LocalScale: {x: 0.050077535, y: 1.8497188, z: 0.8226182}
+  m_LocalPosition: {x: 0.9725, y: 1.1271, z: -9.1399}
+  m_LocalScale: {x: 0.505, y: 1.8497188, z: 0.8226182}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1570,6 +1621,7 @@ MonoBehaviour:
   hookSpeed: 5
   maxDistance: 20
   pullForce: 10
+  enemyHitRadius: 0.05
 --- !u!4 &1956495862
 Transform:
   m_ObjectHideFlags: 0
