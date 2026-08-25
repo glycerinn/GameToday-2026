@@ -17,7 +17,7 @@ public class GrapplingHook : MonoBehaviour
     public float enemyHitRadius = 0.2f;
 
     private bool firing;
-    private bool attached;
+    public bool attached;
 
     private Vector3 hookPosition;
     private Vector3 hookDirection;

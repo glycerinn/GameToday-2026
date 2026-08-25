@@ -107,6 +107,13 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
+        Debug.Log("ENEMY DIED!");
+
+        if (WaveManager.Instance != null)
+        {
+            WaveManager.Instance.EnemyDied();
+        }
+
         Destroy(gameObject);
     }
 }
