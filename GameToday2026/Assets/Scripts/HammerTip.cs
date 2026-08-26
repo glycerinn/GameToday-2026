@@ -25,7 +25,7 @@ public class HammerTip : MonoBehaviour
             hammerController.SetGripPoint(transform.position);
         }
 
-        Enemy enemy = other.GetComponentInParent<Enemy>();
+        IEnemy enemy = other.GetComponentInParent<IEnemy>();
 
         if (enemy != null)
         {

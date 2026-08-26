@@ -4,7 +4,7 @@ public class Bullet : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+        IEnemy enemy = collision.gameObject.GetComponentInParent<IEnemy>();
 
         if (enemy != null)
         {

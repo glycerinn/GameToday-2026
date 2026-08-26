@@ -86,8 +86,7 @@ public class GrapplingHook : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            Enemy enemy =
-                hit.GetComponentInParent<Enemy>();
+            IEnemy enemy = hit.GetComponentInParent<IEnemy>();
 
             if (enemy != null)
             {

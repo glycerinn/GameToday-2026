@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IEnemy
+public class PullEnemy : MonoBehaviour, IEnemy
 {
     [Header("Movement")]
-    public float moveSpeed = 5f;
+    public float moveSpeed = 3f;
 
     [Header("Grapple")]
     public float pullSpeed = 20f;
@@ -12,9 +12,7 @@ public class Enemy : MonoBehaviour, IEnemy
     private Transform player;
     private Rigidbody rb;
 
-    private float playerZ;
-
-    private bool beingPulled;
+    private bool pullingPlayer;
     private float pullTimer;
 
     void Start()
@@ -29,12 +27,6 @@ public class Enemy : MonoBehaviour, IEnemy
         if (playerObject != null)
         {
             player = playerObject.transform;
-            playerZ = player.position.z;
-
-            Vector3 position = rb.position;
-            position.z = playerZ;
-
-            rb.position = position;
         }
     }
 
@@ -43,7 +35,7 @@ public class Enemy : MonoBehaviour, IEnemy
         if (player == null || rb == null)
             return;
 
-        if (beingPulled)
+        if (pullingPlayer)
         {
             pullTimer -= Time.fixedDeltaTime;
 
@@ -65,7 +57,6 @@ public class Enemy : MonoBehaviour, IEnemy
     void MoveTowardPlayer()
     {
         Vector3 direction = player.position - rb.position;
-
         direction.z = 0f;
 
         if (direction.sqrMagnitude < 0.01f)
@@ -88,7 +79,7 @@ public class Enemy : MonoBehaviour, IEnemy
         if (player == null || rb == null)
             return;
 
-        Vector3 direction = player.position - rb.position;
+        Vector3 direction = rb.position - player.position;
         direction.z = 0f;
 
         if (direction.sqrMagnitude < 0.01f)
@@ -96,19 +87,37 @@ public class Enemy : MonoBehaviour, IEnemy
 
         direction.Normalize();
 
-        beingPulled = true;
+        pullingPlayer = true;
         pullTimer = pullDuration;
 
-        rb.linearVelocity = new Vector3(
-            direction.x * pullSpeed,
-            direction.y * pullSpeed,
-            0f
-        );
+        // Pull the PLAYER toward this enemy.
+        Rigidbody playerRb = player.GetComponent<Rigidbody>();
+
+        if (playerRb != null)
+        {
+            playerRb.linearVelocity = new Vector3(
+                direction.x * pullSpeed,
+                direction.y * pullSpeed,
+                0f
+            );
+        }
+    }
+
+    void StopPull()
+    {
+        pullingPlayer = false;
+
+        Rigidbody playerRb = player.GetComponent<Rigidbody>();
+
+        if (playerRb != null)
+        {
+            playerRb.linearVelocity = Vector3.zero;
+        }
     }
 
     public void Die()
     {
-        Debug.Log("ENEMY DIED!");
+        Debug.Log("PULL ENEMY DIED!");
 
         if (WaveManager.Instance != null)
         {
@@ -117,11 +126,4 @@ public class Enemy : MonoBehaviour, IEnemy
 
         Destroy(gameObject);
     }
-
-    void StopPull()
-    {
-        beingPulled = false;
-        rb.linearVelocity = Vector3.zero;
-    }
-    
 }

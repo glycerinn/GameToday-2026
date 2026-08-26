@@ -1,14 +1,16 @@
 using UnityEngine;
 
-[CreateAssetMenu(
-    fileName = "NewWave",
-    menuName = "Game/Wave"
-)]
+[System.Serializable]
+public class EnemySpawnData
+{
+    public GameObject enemyPrefab;
+    public int amount = 1;
+}
+
+[CreateAssetMenu(fileName = "NewWave", menuName = "Game/Wave")]
 public class WaveSO : ScriptableObject
 {
-    [Header("Wave")]
     public int waveNumber;
 
-    [Header("Enemies")]
-    public int enemyCount = 5;
+    public EnemySpawnData[] enemies;
 }

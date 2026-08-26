@@ -1,10 +1,8 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Enemy")]
-    public GameObject enemyPrefab;
-
     [Header("Spawn Area")]
     public float spawnWidth = 15f;
     public float spawnHeight = 8f;
@@ -13,52 +11,107 @@ public class EnemySpawner : MonoBehaviour
     public Transform player;
     public float minimumPlayerDistance = 5f;
 
-    public Enemy[] SpawnEnemies(int amount)
+    public List<IEnemy> SpawnEnemies(EnemySpawnData[] spawnData)
     {
-        Enemy[] spawnedEnemies = new Enemy[amount];
+        List<IEnemy> spawnedEnemies = new List<IEnemy>();
 
-        for (int i = 0; i < amount; i++)
+        foreach (EnemySpawnData data in spawnData)
         {
-            spawnedEnemies[i] = SpawnEnemy();
+            if (data.enemyPrefab == null)
+            {
+                Debug.LogWarning("Enemy spawn entry has no prefab assigned.");
+                continue;
+            }
+
+            for (int i = 0; i < data.amount; i++)
+            {
+                IEnemy enemy = SpawnEnemy(data.enemyPrefab);
+
+                if (enemy != null)
+                {
+                    spawnedEnemies.Add(enemy);
+                }
+            }
         }
 
         return spawnedEnemies;
     }
 
-    Enemy SpawnEnemy()
+    IEnemy SpawnEnemy(GameObject prefab)
     {
         Vector3 spawnPosition;
         int attempts = 0;
 
         do
         {
-            float randomX = Random.Range(-spawnWidth / 2f, spawnWidth / 2f);
-            float randomY = Random.Range(-spawnHeight / 2f, spawnHeight / 2f);
+            float randomX =
+                Random.Range(-spawnWidth / 2f, spawnWidth / 2f);
 
-            spawnPosition = transform.position + new Vector3(randomX, randomY, 0f);
+            float randomY =
+                Random.Range(-spawnHeight / 2f, spawnHeight / 2f);
+
+            spawnPosition =
+                transform.position +
+                new Vector3(randomX, randomY, 0f);
 
             attempts++;
 
-        } while (Vector3.Distance(spawnPosition, player.position) < minimumPlayerDistance && attempts < 100);
+        } while (
+            Vector3.Distance(
+                spawnPosition,
+                player.position
+            ) < minimumPlayerDistance
+            &&
+            attempts < 100
+        );
 
         spawnPosition.z = player.position.z;
 
-        GameObject enemyObject = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        GameObject enemyObject =
+            Instantiate(
+                prefab,
+                spawnPosition,
+                Quaternion.identity
+            );
 
-        return enemyObject.GetComponent<Enemy>();
+        IEnemy enemy =
+            enemyObject.GetComponent<IEnemy>();
+
+        if (enemy == null)
+        {
+            Debug.LogError(
+                "Enemy prefab does not implement IEnemy!",
+                enemyObject
+            );
+
+            Destroy(enemyObject);
+            return null;
+        }
+
+        return enemy;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
 
-        Gizmos.DrawWireCube(transform.position, new Vector3(spawnWidth, spawnHeight, 0.1f));
+        Gizmos.DrawWireCube(
+            transform.position,
+            new Vector3(
+                spawnWidth,
+                spawnHeight,
+                0.1f
+            )
+        );
 
         if (player != null)
         {
             Gizmos.color = Color.red;
 
-            Gizmos.DrawWireSphere(player.position, minimumPlayerDistance);
+            Gizmos.DrawWireSphere(
+                player.position,
+                minimumPlayerDistance
+            );
         }
     }
 }

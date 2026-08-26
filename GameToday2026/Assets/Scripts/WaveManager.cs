@@ -22,7 +22,7 @@ public class WaveManager : MonoBehaviour
 
     private int currentWaveIndex;
 
-    private List<Enemy> aliveEnemies = new List<Enemy>();
+    private List<IEnemy> aliveEnemies = new List<IEnemy>();
 
     private bool changingWave;
 
@@ -48,13 +48,17 @@ public class WaveManager : MonoBehaviour
 
         WaveSO wave = waves[currentWaveIndex];
 
-        Debug.Log("STARTING WAVE " + wave.waveNumber + " | Enemies: " + wave.enemyCount);
+        Debug.Log(
+            "STARTING WAVE " +
+            wave.waveNumber
+        );
 
         aliveEnemies.Clear();
 
-        Enemy[] spawnedEnemies = enemySpawner.SpawnEnemies(wave.enemyCount);
+        List<IEnemy> spawnedEnemies =
+            enemySpawner.SpawnEnemies(wave.enemies);
 
-        foreach (Enemy enemy in spawnedEnemies)
+        foreach (IEnemy enemy in spawnedEnemies)
         {
             if (enemy != null)
             {
@@ -62,26 +66,39 @@ public class WaveManager : MonoBehaviour
             }
         }
 
-        Debug.Log("Tracked enemies: " + aliveEnemies.Count);
+        Debug.Log(
+            "Tracked enemies: " +
+            aliveEnemies.Count
+        );
     }
 
-    public void EnemyDied(Enemy enemy)
+    public void EnemyDied(IEnemy enemy)
     {
         if (!aliveEnemies.Contains(enemy))
         {
-            Debug.LogWarning("Enemy died but was not being tracked by WaveManager.", enemy);
+            Debug.LogWarning(
+                "Enemy died but was not being tracked by WaveManager."
+            );
+
             return;
         }
 
         aliveEnemies.Remove(enemy);
 
-        Debug.Log("Enemy died. Remaining enemies: " + aliveEnemies.Count);
+        Debug.Log(
+            "Enemy died. Remaining enemies: " +
+            aliveEnemies.Count
+        );
 
         if (aliveEnemies.Count == 0 && !changingWave)
         {
             changingWave = true;
 
-            Debug.Log("ALL ENEMIES IN WAVE " + (currentWaveIndex + 1) + " ARE DEAD!");
+            Debug.Log(
+                "ALL ENEMIES IN WAVE " +
+                (currentWaveIndex + 1) +
+                " ARE DEAD!"
+            );
 
             StartCoroutine(BeginNextWave());
         }
@@ -114,7 +131,9 @@ public class WaveManager : MonoBehaviour
 
         if (nextWaveText != null)
         {
-            nextWaveText.text = "NEXT WAVE " + nextWave.waveNumber;
+            nextWaveText.text =
+                "NEXT WAVE " + nextWave.waveNumber;
+
             nextWaveText.gameObject.SetActive(true);
         }
 
