@@ -14,11 +14,7 @@ public class HammerTip : MonoBehaviour
 
     void Update()
     {
-        // Calculate how fast the hammer tip is moving
-        swingSpeed =
-            Vector3.Distance(transform.position, previousPosition)
-            / Time.deltaTime;
-
+        swingSpeed = Vector3.Distance(transform.position, previousPosition) / Time.deltaTime;
         previousPosition = transform.position;
     }
 
@@ -26,7 +22,7 @@ public class HammerTip : MonoBehaviour
     {
         if (other.CompareTag("Ground"))
         {
-            hammerController.SetHammerTouchingGround(true);
+            hammerController.SetGripPoint(transform.position);
         }
 
         Enemy enemy = other.GetComponentInParent<Enemy>();
@@ -35,13 +31,19 @@ public class HammerTip : MonoBehaviour
         {
             Debug.Log("HAMMER HIT ENEMY! Swing speed: " + swingSpeed);
 
-            // Kill if hammer is moving fast enough
             if (swingSpeed >= hammerController.swingThreshold)
             {
                 Debug.Log("ENEMY KILLED!");
-
                 enemy.Die();
             }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Ground"))
+        {
+            hammerController.SetGripPoint(transform.position);
         }
     }
 

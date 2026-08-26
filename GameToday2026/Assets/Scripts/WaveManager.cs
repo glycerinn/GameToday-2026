@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WaveManager : MonoBehaviour
 {
@@ -20,7 +21,10 @@ public class WaveManager : MonoBehaviour
     public float nextWaveTextDuration = 1.5f;
 
     private int currentWaveIndex;
-    private int enemiesAlive;
+
+    private List<Enemy> aliveEnemies = new List<Enemy>();
+
+    private bool changingWave;
 
     void Awake()
     {
@@ -40,33 +44,63 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        WaveSO wave = waves[currentWaveIndex];
-        enemiesAlive = wave.enemyCount;
+        changingWave = false;
 
-        enemySpawner.SpawnEnemies(wave.enemyCount);
+        WaveSO wave = waves[currentWaveIndex];
+
+        Debug.Log("STARTING WAVE " + wave.waveNumber + " | Enemies: " + wave.enemyCount);
+
+        aliveEnemies.Clear();
+
+        Enemy[] spawnedEnemies = enemySpawner.SpawnEnemies(wave.enemyCount);
+
+        foreach (Enemy enemy in spawnedEnemies)
+        {
+            if (enemy != null)
+            {
+                aliveEnemies.Add(enemy);
+            }
+        }
+
+        Debug.Log("Tracked enemies: " + aliveEnemies.Count);
     }
 
-    public void EnemyDied()
+    public void EnemyDied(Enemy enemy)
     {
-        enemiesAlive--;
-        if (enemiesAlive <= 0)
+        if (!aliveEnemies.Contains(enemy))
         {
+            Debug.LogWarning("Enemy died but was not being tracked by WaveManager.", enemy);
+            return;
+        }
+
+        aliveEnemies.Remove(enemy);
+
+        Debug.Log("Enemy died. Remaining enemies: " + aliveEnemies.Count);
+
+        if (aliveEnemies.Count == 0 && !changingWave)
+        {
+            changingWave = true;
+
+            Debug.Log("ALL ENEMIES IN WAVE " + (currentWaveIndex + 1) + " ARE DEAD!");
+
             StartCoroutine(BeginNextWave());
         }
     }
 
     IEnumerator BeginNextWave()
     {
-        // Wait after the last enemy dies
+        if (aliveEnemies.Count > 0)
+        {
+            changingWave = false;
+            yield break;
+        }
+
         yield return new WaitForSeconds(delayBeforeNextWave);
 
         currentWaveIndex++;
 
-        // Check if there are more waves
         if (currentWaveIndex >= waves.Length)
         {
-
-
             if (nextWaveText != null)
             {
                 nextWaveText.text = "ALL WAVES COMPLETE!";
@@ -78,13 +112,9 @@ public class WaveManager : MonoBehaviour
 
         WaveSO nextWave = waves[currentWaveIndex];
 
-        // Show NEXT WAVE
         if (nextWaveText != null)
         {
-            nextWaveText.text =
-                "NEXT WAVE " +
-                nextWave.waveNumber;
-
+            nextWaveText.text = "NEXT WAVE " + nextWave.waveNumber;
             nextWaveText.gameObject.SetActive(true);
         }
 

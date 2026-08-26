@@ -111,7 +111,7 @@ public class Enemy : MonoBehaviour
 
         if (WaveManager.Instance != null)
         {
-            WaveManager.Instance.EnemyDied();
+            WaveManager.Instance.EnemyDied(this);
         }
 
         Destroy(gameObject);
