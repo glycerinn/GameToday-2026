@@ -30,6 +30,9 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
+        if (UpgradeManager.UpgradeSelectionActive)
+            return;
+
         if (Input.GetMouseButtonDown(1))
         {
             if (!firing && !attached)
@@ -59,9 +62,7 @@ public class GrapplingHook : MonoBehaviour
         firing = true;
 
         hookPosition = hammerTip.position;
-
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
         Plane playerPlane = new Plane(Vector3.forward, hammerTip.position);
 
         if (playerPlane.Raycast(ray, out float distance))

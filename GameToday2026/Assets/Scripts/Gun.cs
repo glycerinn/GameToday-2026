@@ -24,6 +24,9 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        if (UpgradeManager.UpgradeSelectionActive)
+            return;
+
         if (isReloading)
             return;
 

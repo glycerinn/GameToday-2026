@@ -9,6 +9,7 @@ public class WaveManager : MonoBehaviour
 
     [Header("References")]
     public EnemySpawner enemySpawner;
+    public UpgradeManager upgradeManager;
 
     [Header("Waves")]
     public WaveSO[] waves;
@@ -17,12 +18,13 @@ public class WaveManager : MonoBehaviour
     public TextMeshProUGUI nextWaveText;
 
     [Header("Timing")]
-    public float delayBeforeNextWave = 2f;
+    public float delayBeforeUpgrades = 2f;
     public float nextWaveTextDuration = 1.5f;
 
     private int currentWaveIndex;
 
-    private List<IEnemy> aliveEnemies = new List<IEnemy>();
+    private List<IEnemy> aliveEnemies =
+        new List<IEnemy>();
 
     private bool changingWave;
 
@@ -100,20 +102,37 @@ public class WaveManager : MonoBehaviour
                 " ARE DEAD!"
             );
 
-            StartCoroutine(BeginNextWave());
+            StartCoroutine(
+                BeginUpgradeSelection()
+            );
         }
     }
 
-    IEnumerator BeginNextWave()
+    IEnumerator BeginUpgradeSelection()
     {
-        if (aliveEnemies.Count > 0)
+        yield return new WaitForSeconds(delayBeforeUpgrades);
+
+        if (upgradeManager != null)
         {
-            changingWave = false;
-            yield break;
+            upgradeManager.ShowUpgradeChoices();
         }
+        else
+        {
+            Debug.LogError(
+                "UpgradeManager is not assigned!"
+            );
+        }
+    }
 
-        yield return new WaitForSeconds(delayBeforeNextWave);
+    public void UpgradeSelected()
+    {
+        Debug.Log("UPGRADE CONFIRMED - CONTINUING TO NEXT WAVE");
 
+        StartCoroutine(ContinueToNextWave());
+    }
+
+    IEnumerator ContinueToNextWave()
+    {
         currentWaveIndex++;
 
         if (currentWaveIndex >= waves.Length)
@@ -131,9 +150,7 @@ public class WaveManager : MonoBehaviour
 
         if (nextWaveText != null)
         {
-            nextWaveText.text =
-                "NEXT WAVE " + nextWave.waveNumber;
-
+            nextWaveText.text = "NEXT WAVE " + nextWave.waveNumber;
             nextWaveText.gameObject.SetActive(true);
         }
 
@@ -141,7 +158,9 @@ public class WaveManager : MonoBehaviour
 
         if (nextWaveText != null)
         {
-            nextWaveText.gameObject.SetActive(false);
+            nextWaveText.gameObject.SetActive(
+                false
+            );
         }
 
         StartWave();

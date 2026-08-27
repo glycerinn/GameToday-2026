@@ -39,12 +39,18 @@ public class HammerController : MonoBehaviour
 
     void Update()
     {
+        if (UpgradeManager.UpgradeSelectionActive)
+            return;
+
         UpdateHammer();
     }
 
     void FixedUpdate()
     {
-        hammerVelocity = (hammerTip.position - previousHammerTipPosition) / Time.fixedDeltaTime;
+        if (UpgradeManager.UpgradeSelectionActive)
+            return;
+
+        hammerVelocity = (hammerTip.position - previousHammerTipPosition)/ Time.fixedDeltaTime;
 
         if (hammerTouchingGround)
         {
@@ -57,16 +63,13 @@ public class HammerController : MonoBehaviour
     void UpdateHammer()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
         Plane playerPlane = new Plane(Vector3.forward, hammerPivot.position);
 
         if (!playerPlane.Raycast(ray, out float distance))
             return;
 
         Vector3 mouseWorld = ray.GetPoint(distance);
-
         Vector3 direction = mouseWorld - hammerPivot.position;
-
         direction.z = 0f;
 
         if (direction.sqrMagnitude < 0.001f)
@@ -75,17 +78,12 @@ public class HammerController : MonoBehaviour
         direction.Normalize();
 
         float mouseDistance = Vector3.Distance(mouseWorld, hammerPivot.position);
-
         float hammerDistance = Mathf.Clamp(mouseDistance * distanceMultiplier, minDistance, maxDistance);
-
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         hammerPivot.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
-
         Vector3 hammerPosition = hammerPivot.position + direction * hammerDistance;
-
         hammerPosition.z = hammerPivot.position.z;
-
         hammer.position = hammerPosition;
     }
 

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55f50a1c992db648b0f60645a95bcf0, type: 3}
+  m_Name: SemiAuto
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeSO
+  UpgradeName: Semi Automatic
+  description: Installs Semi-Automatic Firearm. Fast firerate, tight spread, decreased
+    pellets, no knockback. Press 2 to equip the 12MM, Press 1 to equip the Shotgun.
