@@ -104,14 +104,14 @@ public class EnemySpawner : MonoBehaviour
             )
         );
 
-        if (player != null)
-        {
-            Gizmos.color = Color.red;
+        // if (player != null)
+        // {
+        //     Gizmos.color = Color.red;
 
-            Gizmos.DrawWireSphere(
-                player.position,
-                minimumPlayerDistance
-            );
-        }
+        //     Gizmos.DrawWireSphere(
+        //         player.position,
+        //         minimumPlayerDistance
+        //     );
+        // }
     }
 }
