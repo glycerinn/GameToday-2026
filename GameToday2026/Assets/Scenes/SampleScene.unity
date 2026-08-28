@@ -3435,6 +3435,7 @@ GameObject:
   - component: {fileID: 1471674937}
   - component: {fileID: 1471674936}
   - component: {fileID: 1471674935}
+  - component: {fileID: 1471674939}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3565,6 +3566,22 @@ Transform:
   - {fileID: 589164887}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1471674939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471674934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7616a8ecd7173564396488790c355300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 100
+  enemySpawner: {fileID: 228223913}
+  healthSlider: {fileID: 1153539247}
+  enemyCollisionDamage: 20
 --- !u!1 &1510081679
 GameObject:
   m_ObjectHideFlags: 0
@@ -3749,6 +3766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HammerTip
   hammerController: {fileID: 947808127}
+  playerHealth: {fileID: 1471674939}
 --- !u!65 &1529297707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4532,6 +4550,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b7828da4a5c4fae4eb8532e80769c128, type: 2}
   - {fileID: 11400000, guid: 332258d5edda3ce4b9d97d556e336ae3, type: 2}
   nextWaveText: {fileID: 1510081681}
+  enemySlider: {fileID: 228181841}
+  waveSlider: {fileID: 845245868}
   delayBeforeUpgrades: 2
   nextWaveTextDuration: 1.5
 --- !u!4 &1676241733
@@ -5270,10 +5290,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1929bb511de145e4996125a9307168b1, type: 2}
   - {fileID: 11400000, guid: a01d10705a8fc6343bd7f35f508fc023, type: 2}
   - {fileID: 11400000, guid: e65ce40fee882f44283fffe70fe3d845, type: 2}
-  - {fileID: 11400000, guid: 7a2133b41eaa6c34790a1a4ce010c96a, type: 2}
-  - {fileID: 11400000, guid: 3de76aed3ee837540ab5d8c4dd9fe230, type: 2}
-  - {fileID: 11400000, guid: 691caa6d2eab602469fd8854f5772ea6, type: 2}
   upgradePanel: {fileID: 545175955}
+  player: {fileID: 1471674934}
   upgradeButtons:
   - {fileID: 950149730}
   - {fileID: 1651391094}

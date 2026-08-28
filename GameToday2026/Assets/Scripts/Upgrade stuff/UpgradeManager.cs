@@ -10,6 +10,9 @@ public class UpgradeManager : MonoBehaviour
     [Header("UI")]
     public GameObject upgradePanel;
 
+    [Header("Player")]
+    public GameObject player;
+
     public Button[] upgradeButtons;
     public TMP_Text[] upgradeNames;
     public TMP_Text[] upgradeDescriptions;
@@ -88,14 +91,15 @@ public class UpgradeManager : MonoBehaviour
         if (selectedIndex < 0)
             return;
 
-        UpgradeSO selectedUpgrade = currentChoices[selectedIndex];
+        UpgradeSO selectedUpgrade =
+            currentChoices[selectedIndex];
 
         Debug.Log(
             "CONFIRMED UPGRADE: " +
             selectedUpgrade.UpgradeName
         );
 
-        // Upgrade effects will go here later.
+        ApplyUpgrade(selectedUpgrade);
 
         UpgradeSelectionActive = false;
         upgradePanel.SetActive(false);
@@ -103,6 +107,24 @@ public class UpgradeManager : MonoBehaviour
         if (WaveManager.Instance != null)
         {
             WaveManager.Instance.UpgradeSelected();
+        }
+    }
+
+    void ApplyUpgrade(UpgradeSO upgrade)
+    {
+        if (upgrade.effect == null)
+            return;
+
+        switch (upgrade.effect.type)
+        {
+            case UpgradeEffectType.MaxHealth:
+                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.IncreaseMaxHealth(upgrade.effect.value);
+                }
+
+                break;
         }
     }
 

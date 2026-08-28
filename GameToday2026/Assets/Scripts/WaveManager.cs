@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -16,6 +17,8 @@ public class WaveManager : MonoBehaviour
 
     [Header("UI")]
     public TextMeshProUGUI nextWaveText;
+    public Slider enemySlider;
+    public Slider waveSlider;
 
     [Header("Timing")]
     public float delayBeforeUpgrades = 2f;
@@ -23,8 +26,9 @@ public class WaveManager : MonoBehaviour
 
     private int currentWaveIndex;
 
-    private List<IEnemy> aliveEnemies =
-        new List<IEnemy>();
+    private int currentWaveEnemyCount;
+
+    private List<IEnemy> aliveEnemies = new List<IEnemy>();
 
     private bool changingWave;
 
@@ -35,6 +39,14 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        // Set wave slider
+        if (waveSlider != null)
+        {
+            waveSlider.minValue = 0;
+            waveSlider.maxValue = waves.Length;
+            waveSlider.value = 0;
+        }
+
         StartWave();
     }
 
@@ -47,7 +59,6 @@ public class WaveManager : MonoBehaviour
         }
 
         changingWave = false;
-
         WaveSO wave = waves[currentWaveIndex];
 
         Debug.Log(
@@ -56,9 +67,7 @@ public class WaveManager : MonoBehaviour
         );
 
         aliveEnemies.Clear();
-
-        List<IEnemy> spawnedEnemies =
-            enemySpawner.SpawnEnemies(wave.enemies);
+        List<IEnemy> spawnedEnemies = enemySpawner.SpawnEnemies(wave.enemies);
 
         foreach (IEnemy enemy in spawnedEnemies)
         {
@@ -66,6 +75,24 @@ public class WaveManager : MonoBehaviour
             {
                 aliveEnemies.Add(enemy);
             }
+        }
+
+        // Remember how many enemies this wave started with
+        currentWaveEnemyCount = aliveEnemies.Count;
+
+        // Reset enemy slider for new wave
+        if (enemySlider != null)
+        {
+            enemySlider.minValue = 0;
+            enemySlider.maxValue = currentWaveEnemyCount;
+
+            enemySlider.value = currentWaveEnemyCount;
+        }
+
+        // Update wave slider
+        if (waveSlider != null)
+        {
+            waveSlider.value = currentWaveIndex;
         }
 
         Debug.Log(
@@ -87,6 +114,12 @@ public class WaveManager : MonoBehaviour
 
         aliveEnemies.Remove(enemy);
 
+        // Update enemy slider
+        if (enemySlider != null)
+        {
+            enemySlider.value = aliveEnemies.Count;
+        }
+
         Debug.Log(
             "Enemy died. Remaining enemies: " +
             aliveEnemies.Count
@@ -102,9 +135,7 @@ public class WaveManager : MonoBehaviour
                 " ARE DEAD!"
             );
 
-            StartCoroutine(
-                BeginUpgradeSelection()
-            );
+            StartCoroutine(BeginUpgradeSelection());
         }
     }
 
@@ -126,7 +157,9 @@ public class WaveManager : MonoBehaviour
 
     public void UpgradeSelected()
     {
-        Debug.Log("UPGRADE CONFIRMED - CONTINUING TO NEXT WAVE");
+        Debug.Log(
+            "UPGRADE CONFIRMED - CONTINUING TO NEXT WAVE"
+        );
 
         StartCoroutine(ContinueToNextWave());
     }
@@ -134,6 +167,12 @@ public class WaveManager : MonoBehaviour
     IEnumerator ContinueToNextWave()
     {
         currentWaveIndex++;
+
+        // Update wave progress
+        if (waveSlider != null)
+        {
+            waveSlider.value = currentWaveIndex;
+        }
 
         if (currentWaveIndex >= waves.Length)
         {
@@ -150,7 +189,10 @@ public class WaveManager : MonoBehaviour
 
         if (nextWaveText != null)
         {
-            nextWaveText.text = "NEXT WAVE " + nextWave.waveNumber;
+            nextWaveText.text =
+                "NEXT WAVE " +
+                nextWave.waveNumber;
+
             nextWaveText.gameObject.SetActive(true);
         }
 
@@ -158,9 +200,7 @@ public class WaveManager : MonoBehaviour
 
         if (nextWaveText != null)
         {
-            nextWaveText.gameObject.SetActive(
-                false
-            );
+            nextWaveText.gameObject.SetActive(false);
         }
 
         StartWave();

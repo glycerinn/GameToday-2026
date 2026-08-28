@@ -3,7 +3,7 @@ using UnityEngine;
 public class HammerTip : MonoBehaviour
 {
     public HammerController hammerController;
-
+    public PlayerHealth playerHealth;
     private Vector3 previousPosition;
     private float swingSpeed;
 
@@ -35,6 +35,10 @@ public class HammerTip : MonoBehaviour
             {
                 Debug.Log("ENEMY KILLED!");
                 enemy.Die();
+                if (playerHealth != null)
+                {
+                    playerHealth.Heal(25f);
+                }
             }
         }
     }

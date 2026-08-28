@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSO
   UpgradeName: Armor Plating
   description: Increased defense, added 50 health to M347.
+  effect:
+    type: 0
+    value: 25
