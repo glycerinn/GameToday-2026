@@ -13,4 +13,7 @@ public class WaveSO : ScriptableObject
     public int waveNumber;
 
     public EnemySpawnData[] enemies;
+
+    [Header("Dialogue")]
+    public string upgradeDialogueNode;
 }

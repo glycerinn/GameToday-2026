@@ -16,3 +16,4 @@ MonoBehaviour:
   enemies:
   - enemyPrefab: {fileID: 2331333494245029229, guid: bf168d70eaab2b84aacc2381b5b5ed92, type: 3}
     amount: 4
+  upgradeDialogueNode: MainGame2

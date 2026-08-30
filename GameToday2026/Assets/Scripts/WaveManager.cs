@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Yarn.Unity;
 
 public class WaveManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class WaveManager : MonoBehaviour
     [Header("References")]
     public EnemySpawner enemySpawner;
     public UpgradeManager upgradeManager;
+    public DialogueRunner dialogueRunner;
 
     [Header("Waves")]
     public WaveSO[] waves;
@@ -129,19 +131,36 @@ public class WaveManager : MonoBehaviour
         {
             changingWave = true;
 
-            Debug.Log(
-                "ALL ENEMIES IN WAVE " +
-                (currentWaveIndex + 1) +
-                " ARE DEAD!"
-            );
+            Debug.Log("ALL ENEMIES IN WAVE " + (currentWaveIndex + 1) + " ARE DEAD!");
+
+            if (currentWaveIndex >= waves.Length - 1)
+            {
+                Debug.Log("FINAL WAVE COMPLETE!");
+
+                if (nextWaveText != null)
+                {
+                    nextWaveText.text = "ALL WAVES COMPLETE!";
+                    nextWaveText.gameObject.SetActive(true);
+                }
+
+                return;
+            }
 
             StartCoroutine(BeginUpgradeSelection());
         }
     }
 
-    IEnumerator BeginUpgradeSelection()
+   IEnumerator BeginUpgradeSelection()
     {
         yield return new WaitForSeconds(delayBeforeUpgrades);
+
+        WaveSO wave = waves[currentWaveIndex];
+
+        if (dialogueRunner != null && !string.IsNullOrEmpty(wave.upgradeDialogueNode))
+        {
+            dialogueRunner.StartDialogue(wave.upgradeDialogueNode);
+            yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
+        }
 
         if (upgradeManager != null)
         {
@@ -149,9 +168,7 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError(
-                "UpgradeManager is not assigned!"
-            );
+            Debug.LogError("UpgradeManager is not assigned!");
         }
     }
 
