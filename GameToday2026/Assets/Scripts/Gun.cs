@@ -50,7 +50,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (UpgradeManager.UpgradeSelectionActive)
+        if (UpgradeManager.UpgradeSelectionActive|| WaveManager.DialogueActive)
             return;
 
         if (Input.GetKeyDown(KeyCode.Alpha1))

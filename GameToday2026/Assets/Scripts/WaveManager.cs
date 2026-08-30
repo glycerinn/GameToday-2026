@@ -14,6 +14,9 @@ public class WaveManager : MonoBehaviour
     public UpgradeManager upgradeManager;
     public DialogueRunner dialogueRunner;
 
+    public string introDialogueNode = "GameIntro";
+    public static bool DialogueActive { get; private set; }
+
     [Header("Waves")]
     public WaveSO[] waves;
 
@@ -41,13 +44,27 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
-        // Set wave slider
         if (waveSlider != null)
         {
             waveSlider.minValue = 0;
             waveSlider.maxValue = waves.Length;
             waveSlider.value = 0;
         }
+
+        StartCoroutine(StartGame());
+    }
+
+    IEnumerator StartGame()
+    {
+        DialogueActive = true;
+
+        if (dialogueRunner != null && !string.IsNullOrEmpty(introDialogueNode))
+        {
+            dialogueRunner.StartDialogue(introDialogueNode);
+            yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
+        }
+
+        DialogueActive = false;
 
         StartWave();
     }

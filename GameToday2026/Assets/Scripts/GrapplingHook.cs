@@ -33,7 +33,7 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
-        if (UpgradeManager.UpgradeSelectionActive)
+        if (UpgradeManager.UpgradeSelectionActive|| WaveManager.DialogueActive)
             return;
 
         if (!grappleUnlocked)

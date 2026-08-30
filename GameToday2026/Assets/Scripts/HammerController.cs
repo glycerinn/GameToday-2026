@@ -39,7 +39,7 @@ public class HammerController : MonoBehaviour
 
     void Update()
     {
-        if (UpgradeManager.UpgradeSelectionActive)
+        if (UpgradeManager.UpgradeSelectionActive || WaveManager.DialogueActive)
             return;
 
         UpdateHammer();
@@ -47,7 +47,7 @@ public class HammerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (UpgradeManager.UpgradeSelectionActive)
+        if (UpgradeManager.UpgradeSelectionActive || WaveManager.DialogueActive)
             return;
 
         hammerVelocity = (hammerTip.position - previousHammerTipPosition)/ Time.fixedDeltaTime;
