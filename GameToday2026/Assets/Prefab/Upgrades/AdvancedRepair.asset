@@ -15,3 +15,6 @@ MonoBehaviour:
   UpgradeName: Advanced Repair
   description: Upgrade Repairing Technology. Increase Health Intake from 25HP to
     45HP.
+  effect:
+    type: 5
+    value: 20

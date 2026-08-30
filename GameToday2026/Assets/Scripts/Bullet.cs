@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public PlayerHealth playerHealth;
+
     private void OnCollisionEnter(Collision collision)
     {
         IEnemy enemy = collision.gameObject.GetComponentInParent<IEnemy>();
@@ -9,6 +11,10 @@ public class Bullet : MonoBehaviour
         if (enemy != null)
         {
             enemy.Die();
+
+            if (playerHealth != null)
+                playerHealth.HealOnEnemyKill();
+
             Destroy(gameObject);
             return;
         }

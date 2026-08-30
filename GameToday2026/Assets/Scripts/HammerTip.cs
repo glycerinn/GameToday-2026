@@ -37,7 +37,7 @@ public class HammerTip : MonoBehaviour
                 enemy.Die();
                 if (playerHealth != null)
                 {
-                    playerHealth.Heal(25f);
+                    playerHealth.HealOnEnemyKill();
                 }
             }
         }

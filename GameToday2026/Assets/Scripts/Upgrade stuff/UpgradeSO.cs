@@ -23,5 +23,8 @@ public enum UpgradeEffectType
 {
     MaxHealth,
     UnlockMM,
-    GrappleHook
+    GrappleHook,
+    FastCharge,
+    Knockback,
+    Heal
 }

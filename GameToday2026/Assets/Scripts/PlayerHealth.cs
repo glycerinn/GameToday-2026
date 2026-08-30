@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth = 100;
+    public float healOnEnemyKill = 25f;
     public EnemySpawner enemySpawner;
     public float health { get; set; }
 
@@ -32,6 +33,18 @@ public class PlayerHealth : MonoBehaviour
             Time.timeScale = 0f;
             Debug.Log("Player Died");
         }
+    }
+
+    public void HealOnEnemyKill()
+    {
+        Heal(healOnEnemyKill);
+    }
+
+    public void IncreaseKillHeal(float amount)
+    {
+        healOnEnemyKill += amount;
+
+        Debug.Log("Enemy kill heal increased by " + amount + ". New heal: " + healOnEnemyKill);
     }
 
     public void Heal(float amount)

@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSO
   UpgradeName: Enhanced Shells
   description: High Quality Shotgun Shell Materials. Increase Shotgun Knockback Strength.
+  effect:
+    type: 4
+    value: 2

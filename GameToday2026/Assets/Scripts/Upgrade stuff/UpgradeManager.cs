@@ -153,6 +153,28 @@ public class UpgradeManager : MonoBehaviour
                 }
 
                 break;
+            case UpgradeEffectType.Knockback:
+                Gun knockbackGun = player.GetComponentInChildren<Gun>();
+
+                if (knockbackGun != null)
+                    knockbackGun.IncreaseKnockback(upgrade.effect.value);
+
+                break;
+
+            case UpgradeEffectType.FastCharge:
+                Gun chargeGun = player.GetComponentInChildren<Gun>();
+
+                if (chargeGun != null)
+                    chargeGun.DecreaseChargeTime(upgrade.effect.value);
+
+                break;
+            case UpgradeEffectType.Heal:
+                PlayerHealth healPlayer = player.GetComponent<PlayerHealth>();
+
+                if (healPlayer != null)
+                    healPlayer.IncreaseKillHeal(upgrade.effect.value);
+
+                break;
         }
     }
 
@@ -179,4 +201,5 @@ public class UpgradeManager : MonoBehaviour
 
         return choices;
     }
+    
 }

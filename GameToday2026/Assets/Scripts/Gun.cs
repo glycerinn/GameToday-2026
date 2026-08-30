@@ -127,6 +127,11 @@ public class Gun : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+
+        if (bulletScript != null)
+            bulletScript.playerHealth = playerRb.GetComponent<PlayerHealth>();
+
         StartCoroutine(DestroyBullet(bullet, bulletPrefabLifeTime));
     }
 
@@ -159,5 +164,23 @@ public class Gun : MonoBehaviour
             secondGunModeActive = true;
             Debug.Log("Gun Mode 2: No Knockback");
         }
+    }
+
+    public void IncreaseKnockback(float amount)
+    {
+        playerKnockbackForce += amount;
+
+        Debug.Log("Knockback increased by " + amount + ". New knockback: " + playerKnockbackForce);
+    }
+
+    public void DecreaseChargeTime(float amount)
+    {
+        defaultChargeTime -= amount;
+        secondChargeTime -= amount;
+
+        defaultChargeTime = Mathf.Max(0.05f, defaultChargeTime);
+        secondChargeTime = Mathf.Max(0.05f, secondChargeTime);
+
+        Debug.Log("Charge times decreased by " + amount + ". Default: " + defaultChargeTime + ", Second: " + secondChargeTime);
     }
 }
