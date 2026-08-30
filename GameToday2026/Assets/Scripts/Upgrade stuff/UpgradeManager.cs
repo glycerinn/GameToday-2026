@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class UpgradeManager : MonoBehaviour
 {
     [Header("Upgrades")]
     public UpgradeSO[] availableUpgrades;
+    private List<UpgradeSO> chosenUpgrades = new List<UpgradeSO>();
 
     [Header("UI")]
     public GameObject upgradePanel;
@@ -33,20 +35,29 @@ public class UpgradeManager : MonoBehaviour
     public void ShowUpgradeChoices()
     {
         UpgradeSelectionActive = true;
-
         upgradePanel.SetActive(true);
         selectedIndex = -1;
         confirmButton.interactable = false;
+
         currentChoices = GetRandomUpgrades(3);
 
         for (int i = 0; i < upgradeButtons.Length; i++)
         {
-            int index = i;
+            if (i < currentChoices.Length)
+            {
+                int index = i;
 
-            upgradeButtons[i].onClick.RemoveAllListeners();
-            upgradeButtons[i].onClick.AddListener(() => SelectUpgrade(index));
-            upgradeNames[i].text = currentChoices[i].UpgradeName;
-            upgradeDescriptions[i].text = currentChoices[i].description;
+                upgradeButtons[i].gameObject.SetActive(true);
+                upgradeButtons[i].onClick.RemoveAllListeners();
+                upgradeButtons[i].onClick.AddListener(() => SelectUpgrade(index));
+
+                upgradeNames[i].text = currentChoices[i].UpgradeName;
+                upgradeDescriptions[i].text = currentChoices[i].description;
+            }
+            else
+            {
+                upgradeButtons[i].gameObject.SetActive(false);
+            }
         }
 
         UpdateSelectionVisuals();
@@ -55,31 +66,32 @@ public class UpgradeManager : MonoBehaviour
     void SelectUpgrade(int index)
     {
         selectedIndex = index;
-
         confirmButton.interactable = true;
 
         UpdateSelectionVisuals();
 
-        Debug.Log(
-            "Selected Upgrade: " +
-            currentChoices[index].UpgradeName
-        );
+        Debug.Log("Selected Upgrade: " + currentChoices[index].UpgradeName);
     }
 
     void UpdateSelectionVisuals()
     {
         for (int i = 0; i < upgradeButtons.Length; i++)
         {
-            ColorBlock colors =
-                upgradeButtons[i].colors;
+            ColorBlock colors = upgradeButtons[i].colors;
 
             if (i == selectedIndex)
             {
                 colors.normalColor = Color.green;
+                colors.highlightedColor = Color.green;
+                colors.pressedColor = Color.green;
+                colors.selectedColor = Color.green;
             }
             else
             {
                 colors.normalColor = Color.white;
+                colors.highlightedColor = Color.white;
+                colors.pressedColor = Color.white;
+                colors.selectedColor = Color.white;
             }
 
             upgradeButtons[i].colors = colors;
@@ -91,23 +103,18 @@ public class UpgradeManager : MonoBehaviour
         if (selectedIndex < 0)
             return;
 
-        UpgradeSO selectedUpgrade =
-            currentChoices[selectedIndex];
+        UpgradeSO selectedUpgrade = currentChoices[selectedIndex];
 
-        Debug.Log(
-            "CONFIRMED UPGRADE: " +
-            selectedUpgrade.UpgradeName
-        );
+        Debug.Log("CONFIRMED UPGRADE: " + selectedUpgrade.UpgradeName);
 
+        chosenUpgrades.Add(selectedUpgrade);
         ApplyUpgrade(selectedUpgrade);
 
         UpgradeSelectionActive = false;
         upgradePanel.SetActive(false);
 
         if (WaveManager.Instance != null)
-        {
             WaveManager.Instance.UpgradeSelected();
-        }
     }
 
     void ApplyUpgrade(UpgradeSO upgrade)
@@ -125,41 +132,49 @@ public class UpgradeManager : MonoBehaviour
                 }
 
                 break;
+            case UpgradeEffectType.UnlockMM:
+
+                Gun gun = player.GetComponentInChildren<Gun>();
+
+                if (gun != null)
+                {
+                    gun.UnlockSecondGunMode();
+                }
+
+                break;
+            case UpgradeEffectType.GrappleHook:
+
+                GrapplingHook grapplingHook =
+                    player.GetComponentInChildren<GrapplingHook>();
+
+                if (grapplingHook != null)
+                {
+                    grapplingHook.UnlockGrapple();
+                }
+
+                break;
         }
     }
 
     UpgradeSO[] GetRandomUpgrades(int amount)
     {
+        List<UpgradeSO> remainingUpgrades = new List<UpgradeSO>();
+
+        foreach (UpgradeSO upgrade in availableUpgrades)
+        {
+            if (!chosenUpgrades.Contains(upgrade))
+                remainingUpgrades.Add(upgrade);
+        }
+
+        amount = Mathf.Min(amount, remainingUpgrades.Count);
+
         UpgradeSO[] choices = new UpgradeSO[amount];
 
-        int count = 0;
-
-        while (count < amount)
+        for (int i = 0; i < amount; i++)
         {
-            UpgradeSO randomUpgrade =
-                availableUpgrades[
-                    Random.Range(
-                        0,
-                        availableUpgrades.Length
-                    )
-                ];
-
-            bool alreadySelected = false;
-
-            for (int i = 0; i < count; i++)
-            {
-                if (choices[i] == randomUpgrade)
-                {
-                    alreadySelected = true;
-                    break;
-                }
-            }
-
-            if (!alreadySelected)
-            {
-                choices[count] = randomUpgrade;
-                count++;
-            }
+            int randomIndex = Random.Range(0, remainingUpgrades.Count);
+            choices[i] = remainingUpgrades[randomIndex];
+            remainingUpgrades.RemoveAt(randomIndex);
         }
 
         return choices;

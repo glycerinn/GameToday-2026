@@ -15,3 +15,6 @@ MonoBehaviour:
   UpgradeName: GrappleHook
   description: Installs Grapplehook. Grapples floors, walls, enemies, anything at
     this point. Press RMB/R to use, press RMB/R again to cancel.
+  effect:
+    type: 2
+    value: 0

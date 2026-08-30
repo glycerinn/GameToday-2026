@@ -16,6 +16,9 @@ public class GrapplingHook : MonoBehaviour
     [Header("Enemy Detection")]
     public float enemyHitRadius = 0.2f;
 
+    [Header("Unlock")]
+    public bool grappleUnlocked = false;
+
     private bool firing;
     public bool attached;
 
@@ -31,6 +34,9 @@ public class GrapplingHook : MonoBehaviour
     void Update()
     {
         if (UpgradeManager.UpgradeSelectionActive)
+            return;
+
+        if (!grappleUnlocked)
             return;
 
         if (Input.GetMouseButtonDown(1))
@@ -154,5 +160,12 @@ public class GrapplingHook : MonoBehaviour
 
         direction.Normalize();
         playerRb.AddForce(direction * pullForce, ForceMode.Acceleration);
+    }
+
+    public void UnlockGrapple()
+    {
+        grappleUnlocked = true;
+
+        Debug.Log("GRAPPLE UNLOCKED!");
     }
 }

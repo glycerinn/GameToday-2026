@@ -15,3 +15,6 @@ MonoBehaviour:
   UpgradeName: Semi Automatic
   description: Installs Semi-Automatic Firearm. Fast firerate, tight spread, decreased
     pellets, no knockback. Press 2 to equip the 12MM, Press 1 to equip the Shotgun.
+  effect:
+    type: 1
+    value: 0

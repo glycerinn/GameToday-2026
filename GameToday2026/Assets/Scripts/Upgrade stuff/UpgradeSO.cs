@@ -21,5 +21,7 @@ public class UpgradeEffect
 
 public enum UpgradeEffectType
 {
-    MaxHealth
+    MaxHealth,
+    UnlockMM,
+    GrappleHook
 }

@@ -1,12 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
     [Header("Gun")]
-    private float cooldown = 1f;
-    private float currentcooldown;
-
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
 
@@ -17,71 +15,118 @@ public class Gun : MonoBehaviour
     public float bulletVelocity = 30f;
     public float bulletPrefabLifeTime = 3f;
 
-    [Header("Ammo")]
-    public int bulletcount = 0;
-    public int tilReload = 5;
-    public bool isReloading = false;
+    [Header("Default Gun Spread")]
+    public int bulletsPerShot = 5;
+    public float spreadAngle = 15f;
+
+    [Header("Player Knockback")]
+    public float playerKnockbackForce = 0.5f;
+    public Rigidbody playerRb;
+
+    [Header("Gun Modes")]
+    public bool secondGunModeUnlocked = false;
+    public bool secondGunModeActive = false;
+
+    [Header("Charge")]
+    public float defaultChargeTime = 1f;
+    public float secondChargeTime = 0.5f;
+    [Range(0f, 1f)]
+    public float charge = 1f;
+
+    [Header("Charge UI")]
+    public Slider chargeBar;
+
+    void Start()
+    {
+        charge = 1f;
+
+        if (chargeBar != null)
+        {
+            chargeBar.minValue = 0f;
+            chargeBar.maxValue = 1f;
+            chargeBar.value = charge;
+        }
+    }
 
     void Update()
     {
         if (UpgradeManager.UpgradeSelectionActive)
             return;
 
-        if (isReloading)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            SetGunMode(1);
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            SetGunMode(2);
+
+        Recharge();
+
+        if (Input.GetKeyDown(KeyCode.Mouse0) && charge >= 1f)
+            Shoot();
+    }
+
+    private void Recharge()
+    {
+        if (charge >= 1f)
             return;
 
-        currentcooldown -= Time.deltaTime;
+        float rechargeTime = secondGunModeActive
+            ? secondChargeTime
+            : defaultChargeTime;
 
-        if (currentcooldown <= 0)
-        {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                Shoot();
-            }
-        }
+        charge += Time.deltaTime / rechargeTime;
+        charge = Mathf.Clamp01(charge);
+
+        if (chargeBar != null)
+            chargeBar.value = charge;
     }
 
     private void Shoot()
     {
         FireGun();
 
-        currentcooldown = cooldown;
+        charge = 0f;
 
-        bulletcount++;
-        tilReload--;
-
-        if (tilReload <= 0)
-        {
-            StartCoroutine(Reload());
-        }
-    }
-
-    IEnumerator Reload()
-    {
-        isReloading = true;
-
-        yield return new WaitForSeconds(1f);
-
-        tilReload = 5;
-        isReloading = false;
+        if (chargeBar != null)
+            chargeBar.value = charge;
     }
 
     private void FireGun()
     {
+        Vector3 baseDirection = hammertip.up;
+        baseDirection.z = 0f;
+        baseDirection.Normalize();
+
+        int bulletAmount = secondGunModeActive ? 1 : bulletsPerShot;
+
+        for (int i = 0; i < bulletAmount; i++)
+        {
+            Vector3 direction = baseDirection;
+
+            if (bulletAmount > 1)
+            {
+                float angleStep = spreadAngle / (bulletAmount - 1);
+                float angleOffset = -spreadAngle / 2f + angleStep * i;
+                direction = Quaternion.Euler(0f, 0f, angleOffset) * baseDirection;
+            }
+
+            CreateBullet(direction);
+        }
+
+        if (!secondGunModeActive && playerRb != null)
+            playerRb.AddForce(-baseDirection * playerKnockbackForce, ForceMode.Impulse);
+    }
+
+    private void CreateBullet(Vector3 direction)
+    {
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
 
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-        Vector3 direction = hammertip.up;
-
-        // Force the bullet to stay on the XY plane
-        direction.z = 0f;
-        direction.Normalize();
-
         bulletRb.linearVelocity = direction * bulletVelocity;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
         bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
         StartCoroutine(DestroyBullet(bullet, bulletPrefabLifeTime));
     }
 
@@ -90,8 +135,29 @@ public class Gun : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         if (bullet != null)
-        {
             Destroy(bullet);
+    }
+
+    public void UnlockSecondGunMode()
+    {
+        secondGunModeUnlocked = true;
+        Debug.Log("SECOND GUN MODE UNLOCKED!");
+    }
+
+    public void SetGunMode(int mode)
+    {
+        if (mode == 1)
+        {
+            secondGunModeActive = false;
+            Debug.Log("Gun Mode 1: Default");
+        }
+        else if (mode == 2)
+        {
+            if (!secondGunModeUnlocked)
+                return;
+
+            secondGunModeActive = true;
+            Debug.Log("Gun Mode 2: No Knockback");
         }
     }
 }
