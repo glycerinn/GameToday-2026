@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSO
   UpgradeName: Faster Charging
   description: Improved Charging Mechanism. All equipments are 0,25s more faster.
+  cardSprite: {fileID: -1904174236, guid: 1c4dd90f0f78a0743a96c51befea46eb, type: 3}
   effect:
     type: 3
     value: 0.25
