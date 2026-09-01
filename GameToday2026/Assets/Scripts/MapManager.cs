@@ -5,11 +5,31 @@ public class MapManager : MonoBehaviour
     [Header("Maps")]
     public GameObject[] maps;
 
+    [Header("Starter Map")]
+    public int starterMapIndex = 0;
+
     private int currentMapIndex = -1;
 
     void Start()
     {
-        SetRandomMap();
+        SetStarterMap();
+    }
+
+    public void SetStarterMap()
+    {
+        if (maps == null || maps.Length == 0)
+        {
+            Debug.LogWarning("No maps assigned to MapManager.");
+            return;
+        }
+
+        if (starterMapIndex < 0 || starterMapIndex >= maps.Length)
+        {
+            Debug.LogWarning("Starter map index is invalid.");
+            return;
+        }
+
+        SetMap(starterMapIndex);
     }
 
     public void SetRandomMap()
@@ -48,6 +68,6 @@ public class MapManager : MonoBehaviour
 
         currentMapIndex = index;
 
-        Debug.Log("RANDOM MAP SELECTED: " + maps[index].name);
+        Debug.Log("MAP SELECTED: " + maps[index].name);
     }
 }
