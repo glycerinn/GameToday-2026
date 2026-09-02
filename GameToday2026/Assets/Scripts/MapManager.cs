@@ -5,6 +5,9 @@ public class MapManager : MonoBehaviour
     [Header("Maps")]
     public GameObject[] maps;
 
+    [Header("Player Spawn Points")]
+    public Transform[] playerSpawnPoints;
+
     [Header("Starter Map")]
     public int starterMapIndex = 0;
 
@@ -69,5 +72,17 @@ public class MapManager : MonoBehaviour
         currentMapIndex = index;
 
         Debug.Log("MAP SELECTED: " + maps[index].name);
+    }
+
+    public Transform GetCurrentSpawnPoint()
+    {
+        if (playerSpawnPoints == null ||
+            currentMapIndex < 0 ||
+            currentMapIndex >= playerSpawnPoints.Length)
+        {
+            return null;
+        }
+
+        return playerSpawnPoints[currentMapIndex];
     }
 }

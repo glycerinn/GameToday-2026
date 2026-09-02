@@ -43,8 +43,6 @@ public class PlayerHealth : MonoBehaviour
     public void IncreaseKillHeal(float amount)
     {
         healOnEnemyKill += amount;
-
-        Debug.Log("Enemy kill heal increased by " + amount + ". New heal: " + healOnEnemyKill);
     }
 
     public void Heal(float amount)
@@ -52,8 +50,6 @@ public class PlayerHealth : MonoBehaviour
         health += amount;
         health = Mathf.Clamp(health, 0f, maxHealth);
         UpdateHealthUI();
-
-        Debug.Log("Player healed for " + amount + ". Current health: " + health);
     }
 
     void UpdateHealthUI()
@@ -76,8 +72,6 @@ public class PlayerHealth : MonoBehaviour
         if (!hitCollider.CompareTag("Player"))
             return;
 
-        Debug.Log("PLAYER COLLIDED WITH ENEMY!");
-
         takeDamage(enemyCollisionDamage);
 
         enemy.Die();
@@ -92,12 +86,5 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.value = health;
 
         UpdateHealthUI();
-
-        Debug.Log(
-            "Max health increased by " +
-            amount +
-            ". New max health: " +
-            maxHealth
-        );
     }
 }

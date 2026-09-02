@@ -67,8 +67,6 @@ public class UpgradeManager : MonoBehaviour
         confirmButton.interactable = true;
 
         UpdateSelectionVisuals();
-
-        Debug.Log("Selected Upgrade: " + currentChoices[index].UpgradeName);
     }
 
     void UpdateSelectionVisuals()
@@ -102,9 +100,6 @@ public class UpgradeManager : MonoBehaviour
             return;
 
         UpgradeSO selectedUpgrade = currentChoices[selectedIndex];
-
-        Debug.Log("CONFIRMED UPGRADE: " + selectedUpgrade.UpgradeName);
-
         chosenUpgrades.Add(selectedUpgrade);
         ApplyUpgrade(selectedUpgrade);
 

@@ -14,6 +14,7 @@ public class WaveManager : MonoBehaviour
     public UpgradeManager upgradeManager;
     public DialogueRunner dialogueRunner;
     public MapManager mapManager;
+    public PlayerReset playerReset;
 
     [Header("Dialogue")]
     public string introDialogueNode = "GameIntro";
@@ -77,7 +78,6 @@ public class WaveManager : MonoBehaviour
         }
 
         changingWave = false;
-
         WaveSO wave = waves[currentWaveIndex];
 
         Debug.Log("STARTING WAVE " + wave.waveNumber);
@@ -103,8 +103,6 @@ public class WaveManager : MonoBehaviour
 
         if (waveSlider != null)
             waveSlider.value = currentWaveIndex;
-
-        Debug.Log("Tracked enemies: " + aliveEnemies.Count);
     }
 
     public void EnemyDied(IEnemy enemy)
@@ -120,13 +118,9 @@ public class WaveManager : MonoBehaviour
         if (enemySlider != null)
             enemySlider.value = aliveEnemies.Count;
 
-        Debug.Log("Enemy died. Remaining enemies: " + aliveEnemies.Count);
-
         if (aliveEnemies.Count == 0 && !changingWave)
         {
             changingWave = true;
-
-            Debug.Log("ALL ENEMIES IN WAVE " + (currentWaveIndex + 1) + " ARE DEAD!");
 
             if (currentWaveIndex >= waves.Length - 1)
             {
@@ -173,15 +167,21 @@ public class WaveManager : MonoBehaviour
 
     public void UpgradeSelected()
     {
-        Debug.Log("UPGRADE CONFIRMED - CHANGING MAP");
-
         if (mapManager != null)
         {
             mapManager.SetRandomMap();
+
+            Transform spawnPoint =
+                mapManager.GetCurrentSpawnPoint();
+
+            if (playerReset != null)
+            {
+                playerReset.ResetPlayerPosition(spawnPoint);
+            }
         }
 
         StartCoroutine(ContinueToNextWave());
-    }
+}
 
     IEnumerator ContinueToNextWave()
     {
