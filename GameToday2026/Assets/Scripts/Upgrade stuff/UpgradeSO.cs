@@ -9,8 +9,6 @@ public class UpgradeSO : ScriptableObject
     public string UpgradeName;
     [TextArea(2, 4)]
     public string description;
-
-    public Sprite cardSprite;
     public UpgradeEffect effect;
 }
 
