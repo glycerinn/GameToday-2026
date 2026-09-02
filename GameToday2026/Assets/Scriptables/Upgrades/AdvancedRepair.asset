@@ -15,7 +15,6 @@ MonoBehaviour:
   UpgradeName: Advanced Repair
   description: Upgrade Repairing Technology. Increase Health Intake from 25HP to
     45HP.
-  cardSprite: {fileID: 1850606417, guid: c08a85c175a2b8f4695556c5a42a660b, type: 3}
   effect:
     type: 5
     value: 20

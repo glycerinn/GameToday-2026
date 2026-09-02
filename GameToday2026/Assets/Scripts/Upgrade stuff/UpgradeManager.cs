@@ -16,7 +16,8 @@ public class UpgradeManager : MonoBehaviour
     public GameObject player;
 
     public Button[] upgradeButtons;
-    public Image[] upgradeCards;
+    public TMP_Text[] upgradeNames;
+    public TMP_Text[] upgradeDescriptions;
     public Button confirmButton;
     private UpgradeSO[] currentChoices;
 
@@ -50,7 +51,8 @@ public class UpgradeManager : MonoBehaviour
                 upgradeButtons[i].onClick.RemoveAllListeners();
                 upgradeButtons[i].onClick.AddListener(() => SelectUpgrade(index));
 
-                upgradeCards[i].sprite = currentChoices[i].cardSprite;
+                upgradeNames[i].text = currentChoices[i].UpgradeName;
+                upgradeDescriptions[i].text = currentChoices[i].description;
             }
             else
             {

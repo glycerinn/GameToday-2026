@@ -13,9 +13,7 @@ public class WaveManager : MonoBehaviour
     public EnemySpawner enemySpawner;
     public UpgradeManager upgradeManager;
     public DialogueRunner dialogueRunner;
-    public MapManager mapManager;
 
-    [Header("Dialogue")]
     public string introDialogueNode = "GameIntro";
     public static bool DialogueActive { get; private set; }
 
@@ -32,8 +30,11 @@ public class WaveManager : MonoBehaviour
     public float nextWaveTextDuration = 1.5f;
 
     private int currentWaveIndex;
+
     private int currentWaveEnemyCount;
+
     private List<IEnemy> aliveEnemies = new List<IEnemy>();
+
     private bool changingWave;
 
     void Awake()
@@ -77,50 +78,71 @@ public class WaveManager : MonoBehaviour
         }
 
         changingWave = false;
-
         WaveSO wave = waves[currentWaveIndex];
 
-        Debug.Log("STARTING WAVE " + wave.waveNumber);
+        Debug.Log(
+            "STARTING WAVE " +
+            wave.waveNumber
+        );
 
         aliveEnemies.Clear();
-
         List<IEnemy> spawnedEnemies = enemySpawner.SpawnEnemies(wave.enemies);
 
         foreach (IEnemy enemy in spawnedEnemies)
         {
             if (enemy != null)
+            {
                 aliveEnemies.Add(enemy);
+            }
         }
 
+        // Remember how many enemies this wave started with
         currentWaveEnemyCount = aliveEnemies.Count;
 
+        // Reset enemy slider for new wave
         if (enemySlider != null)
         {
             enemySlider.minValue = 0;
             enemySlider.maxValue = currentWaveEnemyCount;
+
             enemySlider.value = currentWaveEnemyCount;
         }
 
+        // Update wave slider
         if (waveSlider != null)
+        {
             waveSlider.value = currentWaveIndex;
+        }
 
-        Debug.Log("Tracked enemies: " + aliveEnemies.Count);
+        Debug.Log(
+            "Tracked enemies: " +
+            aliveEnemies.Count
+        );
     }
 
     public void EnemyDied(IEnemy enemy)
     {
         if (!aliveEnemies.Contains(enemy))
         {
-            Debug.LogWarning("Enemy died but was not being tracked by WaveManager.");
+            Debug.LogWarning(
+                "Enemy died but was not being tracked by WaveManager."
+            );
+
             return;
         }
 
         aliveEnemies.Remove(enemy);
 
+        // Update enemy slider
         if (enemySlider != null)
+        {
             enemySlider.value = aliveEnemies.Count;
+        }
 
-        Debug.Log("Enemy died. Remaining enemies: " + aliveEnemies.Count);
+        Debug.Log(
+            "Enemy died. Remaining enemies: " +
+            aliveEnemies.Count
+        );
 
         if (aliveEnemies.Count == 0 && !changingWave)
         {
@@ -145,7 +167,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    IEnumerator BeginUpgradeSelection()
+   IEnumerator BeginUpgradeSelection()
     {
         yield return new WaitForSeconds(delayBeforeUpgrades);
 
@@ -153,12 +175,8 @@ public class WaveManager : MonoBehaviour
 
         if (dialogueRunner != null && !string.IsNullOrEmpty(wave.upgradeDialogueNode))
         {
-            DialogueActive = true;
-
             dialogueRunner.StartDialogue(wave.upgradeDialogueNode);
             yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
-
-            DialogueActive = false;
         }
 
         if (upgradeManager != null)
@@ -173,12 +191,9 @@ public class WaveManager : MonoBehaviour
 
     public void UpgradeSelected()
     {
-        Debug.Log("UPGRADE CONFIRMED - CHANGING MAP");
-
-        if (mapManager != null)
-        {
-            mapManager.SetRandomMap();
-        }
+        Debug.Log(
+            "UPGRADE CONFIRMED - CONTINUING TO NEXT WAVE"
+        );
 
         StartCoroutine(ContinueToNextWave());
     }
@@ -187,8 +202,11 @@ public class WaveManager : MonoBehaviour
     {
         currentWaveIndex++;
 
+        // Update wave progress
         if (waveSlider != null)
+        {
             waveSlider.value = currentWaveIndex;
+        }
 
         if (currentWaveIndex >= waves.Length)
         {
@@ -205,14 +223,19 @@ public class WaveManager : MonoBehaviour
 
         if (nextWaveText != null)
         {
-            nextWaveText.text = "NEXT WAVE " + nextWave.waveNumber;
+            nextWaveText.text =
+                "NEXT WAVE " +
+                nextWave.waveNumber;
+
             nextWaveText.gameObject.SetActive(true);
         }
 
         yield return new WaitForSeconds(nextWaveTextDuration);
 
         if (nextWaveText != null)
+        {
             nextWaveText.gameObject.SetActive(false);
+        }
 
         StartWave();
     }
