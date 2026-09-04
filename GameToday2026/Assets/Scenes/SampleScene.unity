@@ -1934,7 +1934,7 @@ MonoBehaviour:
   bulletSpawn: {fileID: 1297663425}
   hammertip: {fileID: 1529297705}
   bulletVelocity: 10
-  bulletPrefabLifeTime: 3
+  bulletPrefabLifeTime: 0.05
   bulletsPerShot: 5
   spreadAngle: 30
   playerKnockbackForce: 2.5
@@ -1945,6 +1945,8 @@ MonoBehaviour:
   secondChargeTime: 0.25
   charge: 1
   chargeBar: {fileID: 1601074456}
+  timeStopDuration: 0.25
+  timeStopScale: 0.02
 --- !u!65 &947808131
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11537,132 +11539,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad2cb798d80b78644a83b1e9ceea4190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapAnimation
-  floorTiles:
-  - {fileID: 5684469462354191256}
-  - {fileID: 551900064577287938}
-  - {fileID: 3720923905097634632}
-  - {fileID: 7028655553854652488}
-  - {fileID: 3544764630696203626}
-  - {fileID: 2411958318360064913}
-  - {fileID: 4035295030174537483}
-  - {fileID: 984061368710313661}
-  - {fileID: 5835733304369888896}
-  - {fileID: 8769495438060717442}
-  - {fileID: 9104830330322260017}
-  - {fileID: 1495916581925418326}
-  - {fileID: 3957292114871157585}
-  - {fileID: 8547475779059484378}
-  - {fileID: 625614256959062102}
-  - {fileID: 6056533470155976841}
-  - {fileID: 9017476168521928821}
-  - {fileID: 1531369111162417326}
-  - {fileID: 2577447255560139909}
-  - {fileID: 6716337978036998106}
-  - {fileID: 3088323560788462138}
-  - {fileID: 55377096087265070}
-  - {fileID: 5318018065934779982}
-  - {fileID: 8825517095196266181}
-  - {fileID: 8064999740582783403}
-  - {fileID: 6231810981174552288}
-  - {fileID: 8022655730885591979}
-  - {fileID: 8562265321534831898}
-  - {fileID: 1079869943540083847}
-  - {fileID: 1939719296385087217}
-  - {fileID: 5216616342432710548}
-  - {fileID: 2608983618334950259}
-  - {fileID: 428280577490808693}
-  - {fileID: 7169355669166802273}
-  - {fileID: 3102095313941425326}
-  - {fileID: 280607931287547630}
-  - {fileID: 7921954121039266381}
-  - {fileID: 3149010016138007121}
-  - {fileID: 8544203584437958373}
-  - {fileID: 8026790815235481392}
-  - {fileID: 5553547763874915858}
-  - {fileID: 4242912468002938339}
-  - {fileID: 7071252117955790961}
-  - {fileID: 1188191524103999565}
-  - {fileID: 2686822371757055974}
-  - {fileID: 619510388108666277}
-  - {fileID: 5786860426988570438}
-  - {fileID: 301843163666096225}
-  - {fileID: 3636334594281767471}
-  - {fileID: 2628911925683747553}
-  - {fileID: 1351412141998789685}
-  - {fileID: 2810149134732536166}
-  - {fileID: 6900895339199142038}
-  - {fileID: 8866672895246195703}
-  - {fileID: 280044765021617921}
-  - {fileID: 3028087846130507899}
-  - {fileID: 8471038844000135662}
-  - {fileID: 7849829366998186102}
-  - {fileID: 1316835944622212005}
-  - {fileID: 3485516103414232379}
-  - {fileID: 6885940289615425880}
-  - {fileID: 2120365283642019636}
-  - {fileID: 34895448701373416}
-  - {fileID: 1956431568529748587}
-  - {fileID: 8225194895410852162}
-  - {fileID: 7201720911618439088}
-  - {fileID: 4741454592049128290}
-  - {fileID: 8946910278464234968}
-  - {fileID: 6059637506619043166}
-  - {fileID: 8671469526831944695}
-  - {fileID: 3760685072647373514}
-  - {fileID: 8011339267051438987}
-  - {fileID: 6120057217906433297}
-  - {fileID: 1118028356994181124}
-  - {fileID: 6410637876573342229}
-  - {fileID: 7810659170686150531}
-  - {fileID: 6895842771500333817}
-  - {fileID: 3989560925105000723}
-  - {fileID: 4205370580565527406}
-  - {fileID: 9174562175814316096}
-  - {fileID: 6409628423867343458}
-  - {fileID: 4933300600619311300}
-  - {fileID: 5001387362284157339}
-  - {fileID: 1853982598751647589}
-  - {fileID: 6740557898789649708}
-  - {fileID: 5705803591552161454}
-  - {fileID: 1850287044331832120}
-  - {fileID: 5892332062073029148}
-  - {fileID: 4651025416527627633}
-  - {fileID: 2482304801033694578}
-  - {fileID: 5398889176624314984}
-  - {fileID: 5580077026599312466}
-  - {fileID: 1748544421489803873}
-  - {fileID: 2192227160324621140}
-  - {fileID: 4714889018330381895}
-  - {fileID: 3550009666276722301}
-  - {fileID: 489281277298997336}
-  - {fileID: 5014439042329057237}
-  - {fileID: 8509004458176726871}
-  - {fileID: 8635491869700805083}
-  riseDistance: 10
-  animationDuration: 1
-  maxStaggerDelay: 0.4
-  animationCurve:
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  originalPositions: []
 --- !u!33 &6646719766303652583
 MeshFilter:
   m_ObjectHideFlags: 0

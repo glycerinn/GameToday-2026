@@ -36,6 +36,12 @@ public class Gun : MonoBehaviour
     [Header("Charge UI")]
     public Slider chargeBar;
 
+    [Header("Time Stop Mechanic")]
+    public float timeStopDuration = 1.0f; // Berapa lama waktu membeku (detik)
+    [Range(0f, 1f)]
+    public float timeStopScale = 0.02f;   // Seberapa lambat gamenya (0 = berhenti total)
+    private bool isTimeStopped = false;
+
     void Start()
     {
         charge = 1f;
@@ -50,7 +56,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (UpgradeManager.UpgradeSelectionActive|| WaveManager.DialogueActive)
+        if (UpgradeManager.UpgradeSelectionActive || WaveManager.DialogueActive)
             return;
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -61,20 +67,23 @@ public class Gun : MonoBehaviour
 
         Recharge();
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && charge >= 1f)
+        // Cek juga agar pemain tidak bisa menembak berulang kali saat waktu sedang membeku
+        if (Input.GetKeyDown(KeyCode.Mouse0) && charge >= 1f && !isTimeStopped)
             Shoot();
     }
 
     private void Recharge()
     {
-        if (charge >= 1f)
+        // Jangan isi ulang peluru jika sedang mode time stop
+        if (charge >= 1f || isTimeStopped)
             return;
 
         float rechargeTime = secondGunModeActive
             ? secondChargeTime
             : defaultChargeTime;
 
-        charge += Time.deltaTime / rechargeTime;
+        // Gunakan unscaledDeltaTime agar charge tetap berjalan normal meski game sedang Slow-Mo
+        charge += Time.unscaledDeltaTime / rechargeTime;
         charge = Mathf.Clamp01(charge);
 
         if (chargeBar != null)
@@ -83,15 +92,38 @@ public class Gun : MonoBehaviour
 
     private void Shoot()
     {
-        FireGun();
-
         charge = 0f;
 
         if (chargeBar != null)
             chargeBar.value = charge;
+
+        // Jalankan efek Time Stop alih-alih menembak instan
+        StartCoroutine(TimeStopShootRoutine());
     }
 
-    private void FireGun()
+    private IEnumerator TimeStopShootRoutine()
+    {
+        isTimeStopped = true;
+
+        // 1. Tembakkan peluru (Peluru akan melayang super lambat karena timeScale 0.02)
+        FireGunBulletsOnly();
+
+        // 2. Hentikan waktu
+        Time.timeScale = timeStopScale;
+
+        // 3. Beri jeda agar pemain bisa mengarahkan palu ke posisi baru
+        yield return new WaitForSecondsRealtime(timeStopDuration);
+
+        // 4. Kembalikan waktu ke normal
+        Time.timeScale = 1f;
+
+        // 5. Berikan efek knockback dari arah palu yang TERBARU
+        ApplyDelayedKnockback();
+
+        isTimeStopped = false;
+    }
+
+    private void FireGunBulletsOnly()
     {
         Vector3 baseDirection = hammertip.up;
         baseDirection.z = 0f;
@@ -112,9 +144,25 @@ public class Gun : MonoBehaviour
 
             CreateBullet(direction);
         }
+    }
 
-        if (!secondGunModeActive && playerRb != null)
-            playerRb.AddForce(-baseDirection * playerKnockbackForce, ForceMode.Impulse);
+    private void ApplyDelayedKnockback()
+    {
+        // Jika mode kedua aktif (No Knockback) atau Rb kosong, jangan beri dorongan
+        if (secondGunModeActive || playerRb == null)
+            return;
+
+        // Ambil arah palu TERBARU setelah jeda waktu habis
+        Vector3 newDirection = hammertip.up;
+        newDirection.z = 0f;
+        newDirection.Normalize();
+
+        // (Opsional) Netralkan kecepatan jatuh agar dorongan ke atas tidak terasa berat
+        Vector3 currentVel = playerRb.linearVelocity;
+        if (currentVel.y < 0) currentVel.y = 0;
+        playerRb.linearVelocity = currentVel;
+
+        playerRb.AddForce(-newDirection * playerKnockbackForce, ForceMode.Impulse);
     }
 
     private void CreateBullet(Vector3 direction)
@@ -137,11 +185,15 @@ public class Gun : MonoBehaviour
 
     private IEnumerator DestroyBullet(GameObject bullet, float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay); // Tetap pakai WaitForSeconds biasa agar timer peluru ikut melambat
 
         if (bullet != null)
             Destroy(bullet);
     }
+
+    // ==========================================
+    // FUNGSI BAWAAN ANDA (TIDAK DIHAPUS)
+    // ==========================================
 
     public void UnlockSecondGunMode()
     {
@@ -169,7 +221,6 @@ public class Gun : MonoBehaviour
     public void IncreaseKnockback(float amount)
     {
         playerKnockbackForce += amount;
-
         Debug.Log("Knockback increased by " + amount + ". New knockback: " + playerKnockbackForce);
     }
 
