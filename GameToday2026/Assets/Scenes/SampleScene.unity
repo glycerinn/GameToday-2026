@@ -10057,7 +10057,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 5000
+  m_ColorTemperature: 20000
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -22291,7 +22291,7 @@ MonoBehaviour:
   gripRadius: 0.2
   minimumHammerMovement: 0.01
   swingThreshold: 1
-  maxPlayerSpeed: 25
+  maxPlayerSpeed: 15
 --- !u!212 &947808128
 SpriteRenderer:
   serializedVersion: 2
@@ -22391,12 +22391,12 @@ MonoBehaviour:
   bulletPrefabLifeTime: 3
   bulletsPerShot: 5
   spreadAngle: 30
-  playerKnockbackForce: 2
+  playerKnockbackForce: 2.5
   playerRb: {fileID: 1471674936}
   secondGunModeUnlocked: 0
   secondGunModeActive: 0
-  defaultChargeTime: 1
-  secondChargeTime: 0.5
+  defaultChargeTime: 0.5
+  secondChargeTime: 0.25
   charge: 1
   chargeBar: {fileID: 1601074456}
 --- !u!65 &947808131
@@ -30792,7 +30792,7 @@ MonoBehaviour:
   healOnEnemyKill: 25
   enemySpawner: {fileID: 228223913}
   healthSlider: {fileID: 1153539247}
-  enemyCollisionDamage: 20
+  enemyCollisionDamage: 35
 --- !u!114 &1471674940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41294,7 +41294,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -41319,7 +41319,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0

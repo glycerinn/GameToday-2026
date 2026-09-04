@@ -17,4 +17,4 @@ MonoBehaviour:
   cardSprite: {fileID: -1904174236, guid: 1c4dd90f0f78a0743a96c51befea46eb, type: 3}
   effect:
     type: 3
-    value: 0.25
+    value: 0.2
