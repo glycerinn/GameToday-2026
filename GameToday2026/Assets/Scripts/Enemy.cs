@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour, IEnemy
     private Rigidbody rb;
 
     private float playerZ;
+    private bool isDead;
 
     private bool beingPulled;
     private float pullTimer;
@@ -108,6 +109,10 @@ public class Enemy : MonoBehaviour, IEnemy
 
     public void Die()
     {
+        if (isDead)
+            return;
+
+        isDead = true;
         Debug.Log("ENEMY DIED!");
 
         if (WaveManager.Instance != null)

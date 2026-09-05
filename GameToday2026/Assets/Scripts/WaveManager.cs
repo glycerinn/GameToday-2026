@@ -107,6 +107,9 @@ public class WaveManager : MonoBehaviour
 
     public void EnemyDied(IEnemy enemy)
     {
+        if (enemy == null)
+            return;
+            
         if (!aliveEnemies.Contains(enemy))
         {
             Debug.LogWarning("Enemy died but was not being tracked by WaveManager.");

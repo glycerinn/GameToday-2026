@@ -2588,6 +2588,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerReset
   playerRb: {fileID: 1471674936}
+  mapManager: {fileID: 1821370872}
+  fallThreshold: -10
 --- !u!1 &1510081679
 GameObject:
   m_ObjectHideFlags: 0
@@ -10625,7 +10627,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6609901069960813245}
-  - component: {fileID: 6609901069960813246}
   m_Layer: 0
   m_Name: Basic
   m_TagString: Untagged
@@ -11527,18 +11528,6 @@ Transform:
   - {fileID: 1118500073}
   m_Father: {fileID: 1384310945}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &6609901069960813246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5832379959511695367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad2cb798d80b78644a83b1e9ceea4190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapAnimation
 --- !u!33 &6646719766303652583
 MeshFilter:
   m_ObjectHideFlags: 0
