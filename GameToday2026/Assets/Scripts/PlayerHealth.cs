@@ -4,12 +4,15 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth = 100;
+    public GameOverPanel GamePanel;
     public float healOnEnemyKill = 25f;
     public EnemySpawner enemySpawner;
     public float health { get; set; }
 
     public Slider healthSlider;
     public float enemyCollisionDamage = 20f;
+
+    public static bool GameOver { get; private set; }
 
     void Start()
     {
@@ -23,15 +26,22 @@ public class PlayerHealth : MonoBehaviour
 
     public void takeDamage(float damage)
     {
+        if (GameOver)
+            return;
         health -= damage;
         healthSlider.value = health;
         UpdateHealthUI();
 
         if (health <= 0)
         {
+            GameOver = true;
             enemySpawner.enabled = false;
-            Time.timeScale = 0f;
+            GamePanel.ShowLose();
+            // gameObject.SetActive(false);
+
             Debug.Log("Player Died");
+
+            Time.timeScale = 0f;
         }
     }
 

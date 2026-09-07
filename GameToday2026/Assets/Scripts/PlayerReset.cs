@@ -10,13 +10,19 @@ public class PlayerReset : MonoBehaviour
     public float fallThreshold = -10f;
 
     private bool isRespawning;
+    private AudioManager audioManager;
+
+    public void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
 
     void Update()
     {
         if (transform.position.y < fallThreshold && !isRespawning)
         {
             Transform spawnPoint = mapManager.GetCurrentSpawnPoint();
-
+            audioManager.playFallSFX();
             ResetPlayerPosition(spawnPoint);
         }
     }

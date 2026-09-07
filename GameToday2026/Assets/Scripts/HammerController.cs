@@ -39,6 +39,8 @@ public class HammerController : MonoBehaviour
 
     void Update()
     {
+        if (PlayerHealth.GameOver)
+            return;
         if (UpgradeManager.UpgradeSelectionActive || WaveManager.DialogueActive)
             return;
 

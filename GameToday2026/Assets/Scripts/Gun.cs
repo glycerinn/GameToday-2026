@@ -42,6 +42,13 @@ public class Gun : MonoBehaviour
     public float timeStopScale = 0.02f;   // Seberapa lambat gamenya (0 = berhenti total)
     private bool isTimeStopped = false;
 
+    private AudioManager audioManager;
+
+    public void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
+
     void Start()
     {
         charge = 1f;
@@ -56,6 +63,8 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        if (PlayerHealth.GameOver)
+            return;
         if (UpgradeManager.UpgradeSelectionActive || WaveManager.DialogueActive)
             return;
 
@@ -69,7 +78,9 @@ public class Gun : MonoBehaviour
 
         // Cek juga agar pemain tidak bisa menembak berulang kali saat waktu sedang membeku
         if (Input.GetKeyDown(KeyCode.Mouse0) && charge >= 1f && !isTimeStopped)
+        {
             Shoot();
+        }
     }
 
     private void Recharge()
@@ -99,6 +110,15 @@ public class Gun : MonoBehaviour
 
         // Jalankan efek Time Stop alih-alih menembak instan
         StartCoroutine(TimeStopShootRoutine());
+
+        if (secondGunModeActive)
+        {
+            audioManager.playMMSFX();
+        }
+        else
+        {
+            audioManager.playShotGunSFX();
+        }
     }
 
     private IEnumerator TimeStopShootRoutine()
@@ -203,6 +223,7 @@ public class Gun : MonoBehaviour
 
     public void SetGunMode(int mode)
     {
+        audioManager.playSwapSFX();
         if (mode == 1)
         {
             secondGunModeActive = false;

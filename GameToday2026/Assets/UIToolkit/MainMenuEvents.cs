@@ -9,12 +9,12 @@ public class MainMenuEvents : MonoBehaviour
     private Button button;
     private Button settingsbutton;
     private Button quitbutton;
-    // private AudioManager audioManager;
+    private AudioManager audioManager;
     // public SettingsManager settings;
 
     private void Awake()
     {
-        // audioManager = AudioManager.instance;
+        audioManager = AudioManager.instance;
         uIDocument = GetComponent<UIDocument>();
 
         button = uIDocument.rootVisualElement.Q("PlayButton") as Button;
@@ -27,29 +27,16 @@ public class MainMenuEvents : MonoBehaviour
         // quitbutton.RegisterCallback<ClickEvent>(OnQuit);
     }
 
-    // private void Start()
-    // {
-    //     int random = Random.Range(0, 3);
-
-    //     if (random == 0)
-    //     {
-    //         audioManager.playLakeA();
-    //     }
-    //     else if (random == 1)
-    //     {
-    //         audioManager.playMountainA();
-    //     }
-    //     else
-    //     {
-    //         audioManager.playVillageA();
-    //     }
-    // }
+    private void Start()
+    {
+        audioManager.playMainMenuBGM();
+    }
 
     private void OnPlayGame(ClickEvent evt)
     {
         Debug.Log("pressed");
-        // audioManager.playClickSFX();
-        // Time.timeScale = 1f;
+        audioManager.playClickSFX();
+        Time.timeScale = 1f;
 
         // if (FadeManager.Instance != null)
         // {

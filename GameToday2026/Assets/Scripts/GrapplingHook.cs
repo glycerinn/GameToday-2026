@@ -26,6 +26,13 @@ public class GrapplingHook : MonoBehaviour
     private Vector3 hookDirection;
     private Vector3 anchorPoint;
 
+    private AudioManager audioManager;
+
+    public void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
+
     void Start()
     {
         rope.enabled = false;
@@ -33,6 +40,12 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
+        if (PlayerHealth.GameOver)
+        {
+            Detach();
+            return;
+        }
+        
         if (UpgradeManager.UpgradeSelectionActive|| WaveManager.DialogueActive)
             return;
 
@@ -43,6 +56,7 @@ public class GrapplingHook : MonoBehaviour
         {
             if (!firing && !attached)
             {
+                audioManager.playGrappleShootSFX();
                 FireHook();
             }
             else if (attached)
@@ -94,7 +108,7 @@ public class GrapplingHook : MonoBehaviour
         foreach (Collider hit in hits)
         {
             IEnemy enemy = hit.GetComponentInParent<IEnemy>();
-
+            audioManager.playGrappleWallSFX();
             if (enemy != null)
             {
                 enemy.PullToPlayer();
@@ -152,6 +166,7 @@ public class GrapplingHook : MonoBehaviour
 
     void PullPlayer()
     {
+        audioManager.playGrapplingSFX();
         Vector3 direction = anchorPoint - playerRb.position;
         direction.z = 0f;
 

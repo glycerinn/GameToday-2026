@@ -15,6 +15,13 @@ public class PullEnemy : MonoBehaviour, IEnemy
     private bool pullingPlayer;
     private float pullTimer;
 
+    private AudioManager audioManager;
+
+    public void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -117,6 +124,7 @@ public class PullEnemy : MonoBehaviour, IEnemy
 
     public void Die()
     {
+        audioManager.playDieSFX();
         Debug.Log("PULL ENEMY DIED!");
 
         if (WaveManager.Instance != null)

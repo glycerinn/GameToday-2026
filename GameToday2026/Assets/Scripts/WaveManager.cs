@@ -50,13 +50,15 @@ public class WaveManager : MonoBehaviour
             waveSlider.maxValue = waves.Length;
             waveSlider.value = 0;
         }
-
         StartCoroutine(StartGame());
     }
 
     IEnumerator StartGame()
     {
         DialogueActive = true;
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.playDialogueBGM();
 
         if (dialogueRunner != null && !string.IsNullOrEmpty(introDialogueNode))
         {
@@ -66,11 +68,17 @@ public class WaveManager : MonoBehaviour
 
         DialogueActive = false;
 
+        if (AudioManager.instance != null)
+            AudioManager.instance.playGameBGM();
+
         StartWave();
     }
 
     void StartWave()
     {
+        if (PlayerHealth.GameOver)
+            return;
+
         if (currentWaveIndex >= waves.Length)
         {
             Debug.Log("ALL WAVES COMPLETE!");
@@ -107,6 +115,9 @@ public class WaveManager : MonoBehaviour
 
     public void EnemyDied(IEnemy enemy)
     {
+        if (PlayerHealth.GameOver)
+            return;
+
         if (enemy == null)
             return;
             
@@ -152,10 +163,17 @@ public class WaveManager : MonoBehaviour
         {
             DialogueActive = true;
 
+            if (AudioManager.instance != null)
+                AudioManager.instance.playDialogueBGM();
+
             dialogueRunner.StartDialogue(wave.upgradeDialogueNode);
+
             yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
 
             DialogueActive = false;
+
+            if (AudioManager.instance != null)
+                AudioManager.instance.playGameBGM();
         }
 
         if (upgradeManager != null)
@@ -170,6 +188,8 @@ public class WaveManager : MonoBehaviour
 
     public void UpgradeSelected()
     {
+        if (PlayerHealth.GameOver)
+            return;
         if (mapManager != null)
         {
             mapManager.SetRandomMap();
