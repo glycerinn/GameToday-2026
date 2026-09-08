@@ -10,10 +10,12 @@ public class GameOverPanel : MonoBehaviour
     private bool isLoading = false;
 
     private AudioManager audioManager;
+    private LevelLoader levelLoader;
 
     public void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
     } 
 
     void Start()
@@ -34,14 +36,34 @@ public class GameOverPanel : MonoBehaviour
         resultText.text = "YOU LOSE!";
         GamePanel.SetActive(true);
     }
-
+    
     public void backtoMenu()
     {
         if (isLoading)
-        return;
+            return;
 
         isLoading = true;
+
         audioManager.playClickSFX();
-        Time.timeScale = 1f;
+
+        if (levelLoader != null)
+        {
+            levelLoader.LoadMainMenu();
+        }
+    }
+
+    public void playAgain()
+    {
+        if (isLoading)
+            return;
+
+        isLoading = true;
+
+        audioManager.playClickSFX();
+
+        if (levelLoader != null)
+        {
+            levelLoader.RetryGame();
+        }
     }
 }

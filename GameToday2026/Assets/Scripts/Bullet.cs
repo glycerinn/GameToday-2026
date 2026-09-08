@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public float damage = 25f;
     public PlayerHealth playerHealth;
 
     private void OnCollisionEnter(Collision collision)
@@ -10,7 +11,7 @@ public class Bullet : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.Die();
+            enemy.TakeDamage(damage);
 
             if (playerHealth != null)
                 playerHealth.HealOnEnemyKill();

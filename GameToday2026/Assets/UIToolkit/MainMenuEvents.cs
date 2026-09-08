@@ -10,11 +10,14 @@ public class MainMenuEvents : MonoBehaviour
     private Button settingsbutton;
     private Button quitbutton;
     private AudioManager audioManager;
+    private LevelLoader levelLoader;
+
     // public SettingsManager settings;
 
     private void Awake()
     {
-        audioManager = AudioManager.instance;
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
         uIDocument = GetComponent<UIDocument>();
 
         button = uIDocument.rootVisualElement.Q("PlayButton") as Button;
@@ -23,8 +26,8 @@ public class MainMenuEvents : MonoBehaviour
         // settingsbutton = uIDocument.rootVisualElement.Q("SettingsButton") as Button;
         // settingsbutton.RegisterCallback<ClickEvent>(OnSettings);
 
-        // quitbutton = uIDocument.rootVisualElement.Q("QuitButton") as Button;
-        // quitbutton.RegisterCallback<ClickEvent>(OnQuit);
+        quitbutton = uIDocument.rootVisualElement.Q("QuitButton") as Button;
+        quitbutton.RegisterCallback<ClickEvent>(OnQuit);
     }
 
     private void Start()
@@ -38,14 +41,7 @@ public class MainMenuEvents : MonoBehaviour
         audioManager.playClickSFX();
         Time.timeScale = 1f;
 
-        // if (FadeManager.Instance != null)
-        // {
-        //     FadeManager.Instance.LoadSceneWithFade("Cutscene");
-        // }
-        // else
-        // {
-            SceneManager.LoadScene("SampleScene");
-        // }
+        levelLoader.LoadGame();
     }
 
     private void OnSettings(ClickEvent evt)

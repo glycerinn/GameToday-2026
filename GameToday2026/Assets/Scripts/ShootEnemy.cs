@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class SpecialEnemy : MonoBehaviour, IEnemy
+public class ShootEnemy : MonoBehaviour, IEnemy
 {
+    [Header("Health")]
+    public float maxHealth = 30f;
+    public float enemyhealth { get; set; }
+
     [Header("Attack")]
     public Transform firePoint;
     public GameObject enemyBulletPrefab;
@@ -33,6 +37,8 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
 
     void Start()
     {
+        enemyhealth = maxHealth;
+
         rb = GetComponent<Rigidbody>();
 
         if (rb == null)
@@ -47,7 +53,6 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
 
             Vector3 position = rb.position;
             position.z = playerZ;
-
             rb.position = position;
         }
 
@@ -56,6 +61,9 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
 
     void FixedUpdate()
     {
+        if (isDead)
+            return;
+
         if (player == null || rb == null)
             return;
 
@@ -64,9 +72,7 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
             pullTimer -= Time.fixedDeltaTime;
 
             if (pullTimer <= 0f)
-            {
                 StopPull();
-            }
         }
         else
         {
@@ -81,7 +87,6 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
     void MoveTowardPlayer()
     {
         Vector3 direction = player.position - rb.position;
-
         direction.z = 0f;
 
         if (direction.sqrMagnitude < 0.01f)
@@ -92,11 +97,7 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
 
         direction.Normalize();
 
-        rb.linearVelocity = new Vector3(
-            direction.x * moveSpeed,
-            direction.y * moveSpeed,
-            0f
-        );
+        rb.linearVelocity = new Vector3(direction.x * moveSpeed, direction.y * moveSpeed, 0f);
     }
 
     void StopPull()
@@ -122,24 +123,42 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
     void FireBullet()
     {
         GameObject bullet = Instantiate(enemyBulletPrefab, firePoint.position, Quaternion.identity);
-        Vector3 direction =(player.position - firePoint.position).normalized;
+        Vector3 direction = (player.position - firePoint.position).normalized;
+
         direction.z = 0f;
         direction.Normalize();
 
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-
         EnemyBullet bulletScript = bullet.GetComponent<EnemyBullet>();
 
         if (bulletScript != null)
-            bulletScript.playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
-
-        if (bulletRb != null)
         {
-            bulletRb.linearVelocity = direction * bulletSpeed;
+            bulletScript.playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         }
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        if (bulletRb != null)
+            bulletRb.linearVelocity = direction * bulletSpeed;
+
+        float angle =
+            Mathf.Atan2(direction.y, direction.x) *
+            Mathf.Rad2Deg;
+
         bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (isDead)
+            return;
+
+        enemyhealth -= damage;
+
+        Debug.Log(
+            "Special Enemy Health: " + enemyhealth
+        );
+
+        if (enemyhealth <= 0)
+            Die();
     }
 
     public void PullToPlayer()
@@ -148,7 +167,6 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
             return;
 
         Vector3 direction = player.position - rb.position;
-
         direction.z = 0f;
 
         if (direction.sqrMagnitude < 0.01f)
@@ -159,7 +177,7 @@ public class SpecialEnemy : MonoBehaviour, IEnemy
         beingPulled = true;
         pullTimer = pullDuration;
 
-        rb.linearVelocity = new Vector3(direction.x * pullSpeed, direction.y * pullSpeed,0f);
+        rb.linearVelocity = new Vector3(direction.x * pullSpeed, direction.y * pullSpeed, 0f);
     }
 
     public void Die()

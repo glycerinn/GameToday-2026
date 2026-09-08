@@ -11,6 +11,7 @@ public class WaveManager : MonoBehaviour
 
     [Header("References")]
     public EnemySpawner enemySpawner;
+    public GameOverPanel GamePanel;
     public UpgradeManager upgradeManager;
     public DialogueRunner dialogueRunner;
     public MapManager mapManager;
@@ -81,7 +82,7 @@ public class WaveManager : MonoBehaviour
 
         if (currentWaveIndex >= waves.Length)
         {
-            Debug.Log("ALL WAVES COMPLETE!");
+            GamePanel.ShowWin();
             return;
         }
 
@@ -142,8 +143,7 @@ public class WaveManager : MonoBehaviour
 
                 if (nextWaveText != null)
                 {
-                    nextWaveText.text = "ALL WAVES COMPLETE!";
-                    nextWaveText.gameObject.SetActive(true);
+                    GamePanel.ShowWin();
                 }
 
                 return;
@@ -204,7 +204,7 @@ public class WaveManager : MonoBehaviour
         }
 
         StartCoroutine(ContinueToNextWave());
-}
+    }
 
     IEnumerator ContinueToNextWave()
     {
@@ -217,8 +217,7 @@ public class WaveManager : MonoBehaviour
         {
             if (nextWaveText != null)
             {
-                nextWaveText.text = "ALL WAVES COMPLETE!";
-                nextWaveText.gameObject.SetActive(true);
+                GamePanel.ShowWin();
             }
 
             yield break;

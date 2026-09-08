@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
     public GameOverPanel GamePanel;
     public float healOnEnemyKill = 25f;
     public EnemySpawner enemySpawner;
-    public float health { get; set; }
+    public float health;
 
     public Slider healthSlider;
     public float enemyCollisionDamage = 20f;

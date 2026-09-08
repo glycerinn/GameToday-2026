@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class PullEnemy : MonoBehaviour, IEnemy
 {
+    [Header("Health")]
+    public float maxHealth = 70f;
+    public float enemyhealth { get; set; }
+
     [Header("Movement")]
     public float moveSpeed = 3f;
 
@@ -12,6 +16,7 @@ public class PullEnemy : MonoBehaviour, IEnemy
     private Transform player;
     private Rigidbody rb;
 
+    private bool isDead;
     private bool pullingPlayer;
     private float pullTimer;
 
@@ -24,6 +29,8 @@ public class PullEnemy : MonoBehaviour, IEnemy
 
     void Start()
     {
+        enemyhealth = maxHealth;
+
         rb = GetComponent<Rigidbody>();
 
         if (rb == null)
@@ -32,13 +39,14 @@ public class PullEnemy : MonoBehaviour, IEnemy
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
         if (playerObject != null)
-        {
             player = playerObject.transform;
-        }
     }
 
     void FixedUpdate()
     {
+        if (isDead)
+            return;
+
         if (player == null || rb == null)
             return;
 
@@ -47,9 +55,7 @@ public class PullEnemy : MonoBehaviour, IEnemy
             pullTimer -= Time.fixedDeltaTime;
 
             if (pullTimer <= 0f)
-            {
                 StopPull();
-            }
         }
         else
         {
@@ -74,11 +80,22 @@ public class PullEnemy : MonoBehaviour, IEnemy
 
         direction.Normalize();
 
-        rb.linearVelocity = new Vector3(
-            direction.x * moveSpeed,
-            direction.y * moveSpeed,
-            0f
+        rb.linearVelocity = new Vector3(direction.x * moveSpeed, direction.y * moveSpeed, 0f);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (isDead)
+            return;
+
+        enemyhealth -= damage;
+
+        Debug.Log(
+            "Pull Enemy Health: " + enemyhealth
         );
+
+        if (enemyhealth <= 0)
+            Die();
     }
 
     public void PullToPlayer()
@@ -97,16 +114,11 @@ public class PullEnemy : MonoBehaviour, IEnemy
         pullingPlayer = true;
         pullTimer = pullDuration;
 
-        // Pull the PLAYER toward this enemy.
         Rigidbody playerRb = player.GetComponent<Rigidbody>();
 
         if (playerRb != null)
         {
-            playerRb.linearVelocity = new Vector3(
-                direction.x * pullSpeed,
-                direction.y * pullSpeed,
-                0f
-            );
+            playerRb.linearVelocity = new Vector3(direction.x * pullSpeed, direction.y * pullSpeed, 0f);
         }
     }
 
@@ -114,23 +126,27 @@ public class PullEnemy : MonoBehaviour, IEnemy
     {
         pullingPlayer = false;
 
-        Rigidbody playerRb = player.GetComponent<Rigidbody>();
+        Rigidbody playerRb =
+            player.GetComponent<Rigidbody>();
 
         if (playerRb != null)
-        {
             playerRb.linearVelocity = Vector3.zero;
-        }
     }
 
     public void Die()
     {
-        audioManager.playDieSFX();
+        if (isDead)
+            return;
+
+        isDead = true;
+
+        if (audioManager != null)
+            audioManager.playDieSFX();
+
         Debug.Log("PULL ENEMY DIED!");
 
         if (WaveManager.Instance != null)
-        {
             WaveManager.Instance.EnemyDied(this);
-        }
 
         Destroy(gameObject);
     }

@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IEnemy
 {
+    [Header("Health")]
+    public float maxHealth = 50;
+    public float enemyhealth { get; set; }
+
     [Header("Movement")]
     public float moveSpeed = 5f;
 
@@ -14,6 +18,7 @@ public class Enemy : MonoBehaviour, IEnemy
 
     private float playerZ;
     private bool isDead;
+    public float health;
 
     private bool beingPulled;
     private float pullTimer;
@@ -27,6 +32,7 @@ public class Enemy : MonoBehaviour, IEnemy
 
     void Start()
     {
+        enemyhealth = maxHealth;
         rb = GetComponent<Rigidbody>();
 
         if (rb == null)
@@ -48,7 +54,7 @@ public class Enemy : MonoBehaviour, IEnemy
 
     void FixedUpdate()
     {
-        if (player == null || rb == null)
+        if (isDead || player == null || rb == null)
             return;
 
         if (beingPulled)
@@ -91,6 +97,20 @@ public class Enemy : MonoBehaviour, IEnemy
         );
     }
 
+    public void TakeDamage(float damage)
+    {
+        if (isDead)
+            return;
+
+        enemyhealth -= damage;
+
+        if (enemyhealth <= 0f)
+        {
+            enemyhealth = 0f;
+            Die();
+        }
+    }
+
     public void PullToPlayer()
     {
         if (player == null || rb == null)
@@ -117,6 +137,7 @@ public class Enemy : MonoBehaviour, IEnemy
     public void Die()
     {
         audioManager.playDieSFX();
+
         if (isDead)
             return;
 

@@ -11,5 +11,8 @@ public class EnemyBullet : MonoBehaviour
             playerHealth.takeDamage(10);
             Destroy(gameObject);
         }
+
+        if (collision.gameObject.CompareTag("Ground"))
+            Destroy(gameObject);
     }
 }
