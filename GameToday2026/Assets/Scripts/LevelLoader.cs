@@ -64,6 +64,15 @@ public class LevelLoader : MonoBehaviour
 
         SceneManager.LoadScene(sceneName);
 
+        yield return null;
+
+        if (animator != null)
+        {
+            animator.SetTrigger("FadeOut");
+        }
+
+        yield return new WaitForSecondsRealtime(fadeDuration);
+
         isLoading = false;
     }
 }
