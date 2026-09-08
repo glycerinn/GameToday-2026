@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 315690659, guid: 5099737efd515514dbf1672b5c02802e, type: 3}
+  m_Sprite: {fileID: -1800862642, guid: fec52996207b9444a904094f4816b253, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -106,9 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1092bb5b956988247962a98f2d9ef93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  maxHealth: 50
   moveSpeed: 0.2
   pullSpeed: 0.5
   pullDuration: 0.5
+  health: 0
 --- !u!135 &1344455337428403283
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -128,8 +130,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.05313632
-  m_Center: {x: 0.0016358048, y: 0.0018805861, z: 0}
+  m_Radius: 0.058986004
+  m_Center: {x: -0.0036080517, y: 0.0018805861, z: 0.0022166334}
 --- !u!54 &6555160348571274017
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -155,5 +157,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 56
+  m_Constraints: 120
   m_CollisionDetection: 1

@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1059272508, guid: ea3bb52755e4d374992133ffcb4ff5a1, type: 3}
+  m_Sprite: {fileID: -1474844638, guid: fec52996207b9444a904094f4816b253, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,8 +113,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.05313632
-  m_Center: {x: 0.0016358048, y: 0.0018805861, z: 0}
+  m_Radius: 0.07421109
+  m_Center: {x: -0.004703775, y: 0.0018805861, z: 0.0014154315}
 --- !u!54 &6555160348571274017
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -140,7 +140,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 56
+  m_Constraints: 120
   m_CollisionDetection: 1
 --- !u!114 &7234245597617386041
 MonoBehaviour:
@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd9ee4028180cb43a88aa235a2b83a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PullEnemy
+  maxHealth: 70
   moveSpeed: 0.2
   pullSpeed: 3
   pullDuration: 0.6

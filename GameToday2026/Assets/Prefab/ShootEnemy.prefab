@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1520592399, guid: 3d348ff67e0b9e542a9407e40d1b63af, type: 3}
+  m_Sprite: {fileID: 1719427506, guid: fec52996207b9444a904094f4816b253, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -114,8 +114,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.05313632
-  m_Center: {x: 0.0016358048, y: 0.0018805861, z: 0}
+  m_Radius: 0.06607211
+  m_Center: {x: 0.004986003, y: -0.00051921606, z: 0}
 --- !u!54 &6555160348571274017
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e719084c0f04c4cb4151cbd4840f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShootEnemy
+  maxHealth: 30
   firePoint: {fileID: 7709817936564701597}
   enemyBulletPrefab: {fileID: 4202520897893467608, guid: 83c198290c8549e45bd6bccb64af5fd0, type: 3}
   shootDelay: 2
@@ -187,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 7917572411060126607}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0027, y: 0.0534, z: 0}
+  m_LocalPosition: {x: -0.0776, y: -0.0318, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
