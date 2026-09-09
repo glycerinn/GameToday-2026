@@ -136,13 +136,35 @@ public class Enemy : MonoBehaviour, IEnemy
 
     public void Die()
     {
-        audioManager.playDieSFX();
-
         if (isDead)
             return;
 
         isDead = true;
-        Debug.Log("ENEMY DIED!");
+
+        if (audioManager != null)
+            audioManager.playDieSFX();
+
+        // Normal kill
+        if (StyleMeter.Instance != null)
+        {
+            StyleMeter.Instance.EnemyKilled();
+        }
+
+        // Check if player is airborne
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObject != null)
+        {
+            PlayerAirState airState =
+                playerObject.GetComponent<PlayerAirState>();
+
+            if (airState != null && airState.IsAirborne)
+            {
+                StyleMeter.Instance.EnemyKilledInAir();
+
+                Debug.Log("AIR KILL! +2 STYLE");
+            }
+        }
 
         if (WaveManager.Instance != null)
         {

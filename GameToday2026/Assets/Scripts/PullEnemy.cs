@@ -143,10 +143,31 @@ public class PullEnemy : MonoBehaviour, IEnemy
         if (audioManager != null)
             audioManager.playDieSFX();
 
-        Debug.Log("PULL ENEMY DIED!");
+        if (StyleMeter.Instance != null)
+        {
+            // Normal kill
+            StyleMeter.Instance.EnemyKilled();
+        }
+
+        GameObject playerObject =
+            GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObject != null)
+        {
+            PlayerAirState airState = playerObject.GetComponent<PlayerAirState>();
+
+            if (airState != null && airState.IsAirborne)
+            {
+                StyleMeter.Instance.EnemyKilledInAir();
+
+                Debug.Log("PULL ENEMY AIR KILL!");
+            }
+        }
 
         if (WaveManager.Instance != null)
+        {
             WaveManager.Instance.EnemyDied(this);
+        }
 
         Destroy(gameObject);
     }

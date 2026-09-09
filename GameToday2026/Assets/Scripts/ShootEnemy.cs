@@ -108,6 +108,7 @@ public class ShootEnemy : MonoBehaviour, IEnemy
 
     IEnumerator Shoot()
     {
+        audioManager.playEnemyShootSFX();
         while (!isDead)
         {
             if (PlayerHealth.GameOver)
@@ -190,10 +191,31 @@ public class ShootEnemy : MonoBehaviour, IEnemy
         if (audioManager != null)
             audioManager.playDieSFX();
 
-        Debug.Log("SPECIAL ENEMY DIED!");
+        if (StyleMeter.Instance != null)
+        {
+            // Normal kill
+            StyleMeter.Instance.EnemyKilled();
+        }
+
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObject != null)
+        {
+            PlayerAirState airState =
+                playerObject.GetComponent<PlayerAirState>();
+
+            if (airState != null && airState.IsAirborne)
+            {
+                StyleMeter.Instance.EnemyKilledInAir();
+
+                Debug.Log("SPECIAL ENEMY AIR KILL!");
+            }
+        }
 
         if (WaveManager.Instance != null)
+        {
             WaveManager.Instance.EnemyDied(this);
+        }
 
         Destroy(gameObject);
     }
