@@ -1,42 +1,80 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameOverPanel : MonoBehaviour
 {
     public GameObject GamePanel;
     public TextMeshProUGUI resultText;
+
     private bool isLoading = false;
 
     private AudioManager audioManager;
     private LevelLoader levelLoader;
 
-    public void Awake()
+    private void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
-        levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
-    } 
+        GameObject loaderObject = GameObject.FindGameObjectWithTag("LevelLoader");
 
-    void Start()
+        if (loaderObject != null)
+        {
+            levelLoader = loaderObject.GetComponent<LevelLoader>();
+        }
+    }
+
+    private void Start()
     {
-        GamePanel.SetActive(false);
+        if (GamePanel != null)
+            GamePanel.SetActive(false);
+    }
+
+    private AudioManager GetAudioManager()
+    {
+        audioManager = AudioManager.instance;
+
+        if (audioManager == null)
+        {
+            Debug.LogError("GameOverPanel: AudioManager.instance is NULL!");
+        }
+
+        return audioManager;
     }
 
     public void ShowWin()
     {
-        audioManager.playGameOverBGM();
-        resultText.text = "YOU WIN!";
-        GamePanel.SetActive(true);
+        Debug.Log("SHOW WIN");
+
+        AudioManager audio = GetAudioManager();
+
+        if (audio != null)
+        {
+            audio.playGameOverBGM();
+        }
+
+        if (resultText != null)
+            resultText.text = "YOU WIN!";
+
+        if (GamePanel != null)
+            GamePanel.SetActive(true);
     }
 
     public void ShowLose()
     {
-        audioManager.playGameOverBGM();
-        resultText.text = "YOU LOSE!";
-        GamePanel.SetActive(true);
+        Debug.Log("SHOW LOSE");
+
+        AudioManager audio = GetAudioManager();
+
+        if (audio != null)
+        {
+            audio.playGameOverBGM();
+        }
+
+        if (resultText != null)
+            resultText.text = "YOU LOSE!";
+
+        if (GamePanel != null)
+            GamePanel.SetActive(true);
     }
-    
+
     public void backtoMenu()
     {
         if (isLoading)
@@ -44,11 +82,18 @@ public class GameOverPanel : MonoBehaviour
 
         isLoading = true;
 
-        audioManager.playClickSFX();
+        AudioManager audio = GetAudioManager();
+
+        if (audio != null)
+            audio.playClickSFX();
 
         if (levelLoader != null)
         {
             levelLoader.LoadMainMenu();
+        }
+        else
+        {
+            Debug.LogError("GameOverPanel: LevelLoader is NULL!");
         }
     }
 
@@ -59,11 +104,18 @@ public class GameOverPanel : MonoBehaviour
 
         isLoading = true;
 
-        audioManager.playClickSFX();
+        AudioManager audio = GetAudioManager();
+
+        if (audio != null)
+            audio.playClickSFX();
 
         if (levelLoader != null)
         {
             levelLoader.RetryGame();
+        }
+        else
+        {
+            Debug.LogError("GameOverPanel: LevelLoader is NULL!");
         }
     }
 }
