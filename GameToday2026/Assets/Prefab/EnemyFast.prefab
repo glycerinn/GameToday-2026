@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2112563758080157849}
   - component: {fileID: 8786073617268096938}
-  - component: {fileID: 7555000420644520696}
   - component: {fileID: 1344455337428403283}
   - component: {fileID: 6555160348571274017}
+  - component: {fileID: 3742378571395761560}
   m_Layer: 0
   m_Name: EnemyFast
   m_TagString: Untagged
@@ -94,46 +94,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &7555000420644520696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2331333494245029229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1092bb5b956988247962a98f2d9ef93b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyType: 1
-  maxHealth: 10
-  moveSpeed: 1
-  dashSpeed: 1
-  aimDuration: 1.2
-  dashDuration: 0.5
-  normalAcceleration: 8
-  optimalDistance: 8
-  retreatDistance: 5
-  maxChaseDistance: 14
-  catchUpMultiplier: 2
-  shooterSpeed: 5
-  dodgeSpeed: 4
-  dodgeFrequency: 2
-  shooterAcceleration: 3
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
-  fireRate: 2
-  bulletSpeed: 20
-  leadTarget: 1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  groundCheckDistance: 0.05
-  minHeightAboveGround: 0.01
-  obstacleAvoidSpeed: 10
-  pullSpeed: 0.5
-  pullDuration: 0.5
 --- !u!135 &1344455337428403283
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -182,3 +142,20 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 120
   m_CollisionDetection: 1
+--- !u!114 &3742378571395761560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331333494245029229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf42d12983d2d24782bbb1930d257cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FastEnemy
+  maxHealth: 10
+  moveSpeed: 0.7
+  pullSpeed: 20
+  pullDuration: 0.4
+  health: 0

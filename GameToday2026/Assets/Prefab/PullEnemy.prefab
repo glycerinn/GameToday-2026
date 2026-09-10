@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1344455337428403283}
   - component: {fileID: 6555160348571274017}
   - component: {fileID: 7234245597617386041}
+  - component: {fileID: 7697502003114498480}
   m_Layer: 0
   m_Name: PullEnemy
   m_TagString: Untagged
@@ -149,7 +150,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2331333494245029229}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cd9ee4028180cb43a88aa235a2b83a1, type: 3}
   m_Name: 
@@ -158,3 +159,43 @@ MonoBehaviour:
   moveSpeed: 1
   pullSpeed: 3
   pullDuration: 0.6
+--- !u!114 &7697502003114498480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331333494245029229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1092bb5b956988247962a98f2d9ef93b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  enemyType: 2
+  maxHealth: 70
+  moveSpeed: 0.1
+  dashSpeed: 15
+  aimDuration: 1.2
+  dashDuration: 0.5
+  normalAcceleration: 8
+  optimalDistance: 8
+  retreatDistance: 5
+  maxChaseDistance: 14
+  catchUpMultiplier: 2
+  shooterSpeed: 5
+  dodgeSpeed: 4
+  dodgeFrequency: 2
+  shooterAcceleration: 3
+  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  fireRate: 2
+  bulletSpeed: 20
+  leadTarget: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckDistance: 2
+  minHeightAboveGround: 1.5
+  obstacleAvoidSpeed: 10
+  pullSpeed: 20
+  pullDuration: 0.4
