@@ -29,14 +29,17 @@ public class WaveManager : MonoBehaviour
     public Slider enemySlider;
     public Slider waveSlider;
 
-    [Header("Timing")]
+    [Header("Timing & Spawning")]
     public float delayBeforeUpgrades = 2f;
     public float nextWaveTextDuration = 1.5f;
+    public float timeBetweenSpawns = 1.2f; // Jeda waktu (detik) antar kemunculan musuh
 
     private int currentWaveIndex;
-    private int currentWaveEnemyCount;
+    private int enemiesLeftToSpawn;
     private List<IEnemy> aliveEnemies = new List<IEnemy>();
+
     private bool changingWave;
+    private bool isSpawningWave;
 
     void Awake()
     {
@@ -57,9 +60,7 @@ public class WaveManager : MonoBehaviour
     IEnumerator StartGame()
     {
         DialogueActive = true;
-
-        if (AudioManager.instance != null)
-            AudioManager.instance.playDialogueBGM();
+        if (AudioManager.instance != null) AudioManager.instance.playDialogueBGM();
 
         if (dialogueRunner != null && !string.IsNullOrEmpty(introDialogueNode))
         {
@@ -68,18 +69,13 @@ public class WaveManager : MonoBehaviour
         }
 
         DialogueActive = false;
-
-        if (AudioManager.instance != null)
-            AudioManager.instance.playGameBGM();
-
+        if (AudioManager.instance != null) AudioManager.instance.playGameBGM();
         StartWave();
     }
 
     void StartWave()
     {
-        if (PlayerHealth.GameOver)
-            return;
-
+        if (PlayerHealth.GameOver) return;
         if (currentWaveIndex >= waves.Length)
         {
             GamePanel.ShowWin();
@@ -88,64 +84,86 @@ public class WaveManager : MonoBehaviour
 
         changingWave = false;
         WaveSO wave = waves[currentWaveIndex];
-
         Debug.Log("STARTING WAVE " + wave.waveNumber);
 
         aliveEnemies.Clear();
 
-        List<IEnemy> spawnedEnemies = enemySpawner.SpawnEnemies(wave.enemies);
-
-        foreach (IEnemy enemy in spawnedEnemies)
+        // Hitung total semua musuh di wave ini untuk UI
+        int totalWaveEnemies = 0;
+        foreach (var data in wave.enemies)
         {
-            if (enemy != null)
-                aliveEnemies.Add(enemy);
+            totalWaveEnemies += data.amount;
         }
-
-        currentWaveEnemyCount = aliveEnemies.Count;
+        enemiesLeftToSpawn = totalWaveEnemies;
 
         if (enemySlider != null)
         {
             enemySlider.minValue = 0;
-            enemySlider.maxValue = currentWaveEnemyCount;
-            enemySlider.value = currentWaveEnemyCount;
+            enemySlider.maxValue = totalWaveEnemies;
+            enemySlider.value = totalWaveEnemies;
         }
 
-        if (waveSlider != null)
-            waveSlider.value = currentWaveIndex;
+        if (waveSlider != null) waveSlider.value = currentWaveIndex;
+
+        // Mulai memunculkan musuh satu per satu
+        StartCoroutine(SpawnWaveRoutine(wave));
+    }
+
+    IEnumerator SpawnWaveRoutine(WaveSO wave)
+    {
+        isSpawningWave = true;
+
+        foreach (EnemySpawnData data in wave.enemies)
+        {
+            for (int i = 0; i < data.amount; i++)
+            {
+                if (PlayerHealth.GameOver) yield break;
+
+                IEnemy enemy = enemySpawner.SpawnSingleEnemy(data.enemyPrefab);
+                if (enemy != null)
+                {
+                    aliveEnemies.Add(enemy);
+                }
+
+                enemiesLeftToSpawn--;
+
+                // Tunggu beberapa detik sebelum musuh berikutnya muncul
+                yield return new WaitForSeconds(timeBetweenSpawns);
+            }
+        }
+
+        isSpawningWave = false;
+
+        // Cek jika musuh terakhir dibunuh tepat sebelum antrean spawn selesai
+        CheckWaveCompletion();
     }
 
     public void EnemyDied(IEnemy enemy)
     {
-        if (PlayerHealth.GameOver)
-            return;
+        if (PlayerHealth.GameOver || enemy == null) return;
 
-        if (enemy == null)
-            return;
-            
-        if (!aliveEnemies.Contains(enemy))
+        if (aliveEnemies.Contains(enemy))
         {
-            Debug.LogWarning("Enemy died but was not being tracked by WaveManager.");
-            return;
+            aliveEnemies.Remove(enemy);
         }
 
-        aliveEnemies.Remove(enemy);
-
+        // UI Slider = jumlah musuh hidup + jumlah musuh yang belum di-spawn
         if (enemySlider != null)
-            enemySlider.value = aliveEnemies.Count;
+            enemySlider.value = aliveEnemies.Count + enemiesLeftToSpawn;
 
-        if (aliveEnemies.Count == 0 && !changingWave)
+        CheckWaveCompletion();
+    }
+
+    private void CheckWaveCompletion()
+    {
+        if (aliveEnemies.Count == 0 && !isSpawningWave && !changingWave)
         {
             changingWave = true;
 
             if (currentWaveIndex >= waves.Length - 1)
             {
                 Debug.Log("FINAL WAVE COMPLETE!");
-
-                if (nextWaveText != null)
-                {
-                    GamePanel.ShowWin();
-                }
-
+                if (nextWaveText != null) GamePanel.ShowWin();
                 return;
             }
 
@@ -162,69 +180,43 @@ public class WaveManager : MonoBehaviour
         if (dialogueRunner != null && !string.IsNullOrEmpty(wave.upgradeDialogueNode))
         {
             DialogueActive = true;
-
-            if (AudioManager.instance != null)
-                AudioManager.instance.playDialogueBGM();
+            if (AudioManager.instance != null) AudioManager.instance.playDialogueBGM();
 
             dialogueRunner.StartDialogue(wave.upgradeDialogueNode);
-
             yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
 
             DialogueActive = false;
-
-            if (AudioManager.instance != null)
-                AudioManager.instance.playGameBGM();
+            if (AudioManager.instance != null) AudioManager.instance.playGameBGM();
         }
 
-        if (upgradeManager != null)
-        {
-            upgradeManager.ShowUpgradeChoices();
-        }
-        else
-        {
-            Debug.LogError("UpgradeManager is not assigned!");
-        }
+        if (upgradeManager != null) upgradeManager.ShowUpgradeChoices();
+        else Debug.LogError("UpgradeManager is not assigned!");
     }
 
     public void UpgradeSelected()
     {
-        if (PlayerHealth.GameOver)
-            return;
+        if (PlayerHealth.GameOver) return;
         if (mapManager != null)
         {
             mapManager.SetRandomMap();
-
-            Transform spawnPoint =
-                mapManager.GetCurrentSpawnPoint();
-
-            if (playerReset != null)
-            {
-                playerReset.ResetPlayerPosition(spawnPoint);
-            }
+            Transform spawnPoint = mapManager.GetCurrentSpawnPoint();
+            if (playerReset != null) playerReset.ResetPlayerPosition(spawnPoint);
         }
-
         StartCoroutine(ContinueToNextWave());
     }
 
     IEnumerator ContinueToNextWave()
     {
         currentWaveIndex++;
-
-        if (waveSlider != null)
-            waveSlider.value = currentWaveIndex;
+        if (waveSlider != null) waveSlider.value = currentWaveIndex;
 
         if (currentWaveIndex >= waves.Length)
         {
-            if (nextWaveText != null)
-            {
-                GamePanel.ShowWin();
-            }
-
+            if (nextWaveText != null) GamePanel.ShowWin();
             yield break;
         }
 
         WaveSO nextWave = waves[currentWaveIndex];
-
         if (nextWaveText != null)
         {
             nextWaveText.text = "NEXT WAVE " + nextWave.waveNumber;
@@ -232,9 +224,7 @@ public class WaveManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(nextWaveTextDuration);
-
-        if (nextWaveText != null)
-            nextWaveText.gameObject.SetActive(false);
+        if (nextWaveText != null) nextWaveText.gameObject.SetActive(false);
 
         StartWave();
     }
