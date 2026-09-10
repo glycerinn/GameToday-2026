@@ -110,11 +110,13 @@ MonoBehaviour:
   maxHealth: 50
   moveSpeed: 0.1
   dashSpeed: 1
-  aimDuration: 1.2
+  aimDuration: 0.75
   dashDuration: 0.5
   normalAcceleration: 12
   optimalDistance: 2
   retreatDistance: 1
+  maxChaseDistance: 14
+  catchUpMultiplier: 2
   shooterSpeed: 5
   dodgeSpeed: 4
   dodgeFrequency: 2
@@ -122,6 +124,14 @@ MonoBehaviour:
   bulletPrefab: {fileID: 0}
   firePoint: {fileID: 0}
   fireRate: 2
+  bulletSpeed: 20
+  leadTarget: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckDistance: 2
+  minHeightAboveGround: 1.5
+  obstacleAvoidSpeed: 10
   pullSpeed: 0.5
   pullDuration: 0.5
 --- !u!135 &1344455337428403283
