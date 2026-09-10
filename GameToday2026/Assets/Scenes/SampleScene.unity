@@ -4717,6 +4717,7 @@ MonoBehaviour:
   waveSlider: {fileID: 845245868}
   delayBeforeUpgrades: 2
   nextWaveTextDuration: 1.5
+  timeBetweenSpawns: 1.2
 --- !u!4 &1676241733
 Transform:
   m_ObjectHideFlags: 0

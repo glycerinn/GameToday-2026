@@ -171,4 +171,12 @@ public class PullEnemy : MonoBehaviour, IEnemy
 
         Destroy(gameObject);
     }
+
+    // Tambahkan di dalam class PullEnemy
+    public bool OnGrappled()
+    {
+        // Return true berarti musuh ini yang akan terseret ke arah Player
+        PullToPlayer();
+        return true;
+    }
 }

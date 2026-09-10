@@ -219,4 +219,11 @@ public class ShootEnemy : MonoBehaviour, IEnemy
 
         Destroy(gameObject);
     }
+
+    // Tambahkan di dalam class ShootEnemy
+    public bool OnGrappled()
+    {
+        // Return false berarti Player yang akan ditarik melesat ke arah musuh ini
+        return false;
+    }
 }

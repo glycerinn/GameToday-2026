@@ -106,11 +106,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1092bb5b956988247962a98f2d9ef93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHealth: 50
-  moveSpeed: 0.2
+  enemyType: 1
+  maxHealth: 10
+  moveSpeed: 1
+  dashSpeed: 1
+  aimDuration: 1.2
+  dashDuration: 0.5
+  normalAcceleration: 8
+  optimalDistance: 8
+  retreatDistance: 5
+  maxChaseDistance: 14
+  catchUpMultiplier: 2
+  shooterSpeed: 5
+  dodgeSpeed: 4
+  dodgeFrequency: 2
+  shooterAcceleration: 3
+  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  fireRate: 2
+  bulletSpeed: 20
+  leadTarget: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckDistance: 0.05
+  minHeightAboveGround: 0.01
+  obstacleAvoidSpeed: 10
   pullSpeed: 0.5
   pullDuration: 0.5
-  health: 0
 --- !u!135 &1344455337428403283
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -108,25 +108,38 @@ public class GrapplingHook : MonoBehaviour
         foreach (Collider hit in hits)
         {
             IEnemy enemy = hit.GetComponentInParent<IEnemy>();
-            audioManager.playGrappleWallSFX();
+
             if (enemy != null)
             {
-                enemy.PullToPlayer();
-                CancelHook();
+                // Mainkan suara hit musuh (Bisa dipisah nanti kalau punya SFX khusus musuh)
+                if (audioManager != null) audioManager.playGrappleWallSFX();
+
+                // Tanya AI musuhnya! 
+                bool isEnemyPulled = enemy.OnGrappled();
+
+                if (isEnemyPulled)
+                {
+                    // Tali lepas karena musuh (Normal/Fast) terbang ke arah kita
+                    CancelHook();
+                }
+                else
+                {
+                    // MUSUH HEAVY/SHOOTER TERTANGKAP!
+                    // Aktifkan mekanik Player melesat terbang (sama seperti narik tembok)
+                    AttachHook(hit.transform.position);
+                }
                 return;
             }
 
             if (hit.CompareTag("Ground"))
             {
+                if (audioManager != null) audioManager.playGrappleWallSFX();
                 AttachHook(hookPosition);
-
                 return;
             }
         }
 
-        if (Vector3.Distance(
-                hammerTip.position,
-                hookPosition) > maxDistance)
+        if (Vector3.Distance(hammerTip.position, hookPosition) > maxDistance)
         {
             CancelHook();
         }
