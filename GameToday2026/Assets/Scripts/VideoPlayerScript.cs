@@ -10,10 +10,17 @@ public class VideoPlayerScript : MonoBehaviour
     public GameObject SkipButton;
 
     private AudioManager audioManager;
+    private LevelLoader levelLoader;
 
     public void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        GameObject loaderObject = GameObject.FindGameObjectWithTag("LevelLoader");
+
+        if (loaderObject != null)
+        {
+            levelLoader = loaderObject.GetComponent<LevelLoader>();
+        }
     }
 
     void Start()
@@ -31,7 +38,9 @@ public class VideoPlayerScript : MonoBehaviour
             return;
 
         isLoading = true;
-        // StartCoroutine(LoadNextLevel());
+        videoPlayer.Stop();
+
+        levelLoader.LoadGame();
     }
 
     public IEnumerator ShowSkipButton()
@@ -46,19 +55,24 @@ public class VideoPlayerScript : MonoBehaviour
             return;
 
         isLoading = true;
-        // StartCoroutine(LoadNextLevel());
+        videoPlayer.Stop();
+
+        levelLoader.LoadGame();
+    }
+
+    public void SkipVideoTwo()
+    {
+        if (isLoading)
+            return;
+
+        isLoading = true;
+        videoPlayer.Stop();
+
+        levelLoader.LoadMainMenu();
     }
 
     void OnDestroy()
     {
         videoPlayer.loopPointReached -= LoadNextScene;
     }
-
-    // IEnumerator LoadNextLevel()
-    // {
-    //     videoPlayer.Stop();
-    //     yield return StartCoroutine(Transition.Instance.PlayTransition());
-    //     SceneManager.LoadScene("SampleScene");
-    //     yield return StartCoroutine(Transition.Instance.EndTransition());
-    // }
 }
