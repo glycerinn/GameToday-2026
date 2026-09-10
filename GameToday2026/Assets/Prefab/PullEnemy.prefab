@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PullEnemy
   maxHealth: 70
-  moveSpeed: 1
+  moveSpeed: 2
   pullSpeed: 3
   pullDuration: 0.6
 --- !u!114 &7697502003114498480

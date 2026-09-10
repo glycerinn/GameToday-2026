@@ -32,12 +32,12 @@ public class WaveManager : MonoBehaviour
     [Header("Timing & Spawning")]
     public float delayBeforeUpgrades = 2f;
     public float nextWaveTextDuration = 1.5f;
-    public float timeBetweenSpawns = 1.2f; // Jeda waktu (detik) antar kemunculan musuh
+    public float timeBetweenSpawns = 1.2f; // Jeda waktu antar kemunculan
 
     private int currentWaveIndex;
     private int enemiesLeftToSpawn;
     private List<IEnemy> aliveEnemies = new List<IEnemy>();
-
+    
     private bool changingWave;
     private bool isSpawningWave;
 
@@ -85,10 +85,10 @@ public class WaveManager : MonoBehaviour
         changingWave = false;
         WaveSO wave = waves[currentWaveIndex];
         Debug.Log("STARTING WAVE " + wave.waveNumber);
-
+        
         aliveEnemies.Clear();
 
-        // Hitung total semua musuh di wave ini untuk UI
+        // Hitung total semua musuh
         int totalWaveEnemies = 0;
         foreach (var data in wave.enemies)
         {
@@ -105,7 +105,6 @@ public class WaveManager : MonoBehaviour
 
         if (waveSlider != null) waveSlider.value = currentWaveIndex;
 
-        // Mulai memunculkan musuh satu per satu
         StartCoroutine(SpawnWaveRoutine(wave));
     }
 
@@ -113,41 +112,59 @@ public class WaveManager : MonoBehaviour
     {
         isSpawningWave = true;
 
+        // 1. Kumpulkan semua musuh dari berbagai Element ke dalam satu "Kantong"
+        List<GameObject> enemiesToSpawn = new List<GameObject>();
+        
         foreach (EnemySpawnData data in wave.enemies)
         {
             for (int i = 0; i < data.amount; i++)
             {
-                if (PlayerHealth.GameOver) yield break;
-
-                IEnemy enemy = enemySpawner.SpawnSingleEnemy(data.enemyPrefab);
-                if (enemy != null)
+                if (data.enemyPrefab != null)
                 {
-                    aliveEnemies.Add(enemy);
+                    enemiesToSpawn.Add(data.enemyPrefab);
                 }
-
-                enemiesLeftToSpawn--;
-
-                // Tunggu beberapa detik sebelum musuh berikutnya muncul
-                yield return new WaitForSeconds(timeBetweenSpawns);
             }
         }
 
-        isSpawningWave = false;
+        // 2. Acak (Shuffle) isi kantong agar elemen muncul secara acak
+        for (int i = 0; i < enemiesToSpawn.Count; i++)
+        {
+            GameObject temp = enemiesToSpawn[i];
+            int randomIndex = Random.Range(i, enemiesToSpawn.Count);
+            enemiesToSpawn[i] = enemiesToSpawn[randomIndex];
+            enemiesToSpawn[randomIndex] = temp;
+        }
 
-        // Cek jika musuh terakhir dibunuh tepat sebelum antrean spawn selesai
+        // 3. Spawn musuh satu per satu dari kantong yang diacak
+        foreach (GameObject prefab in enemiesToSpawn)
+        {
+            if (PlayerHealth.GameOver) yield break;
+
+            IEnemy enemy = enemySpawner.SpawnSingleEnemy(prefab);
+            if (enemy != null)
+            {
+                aliveEnemies.Add(enemy);
+            }
+            
+            enemiesLeftToSpawn--;
+            
+            // Jeda sebelum memunculkan musuh berikutnya (ubah di Inspector untuk mengatur seberapa "spammy")
+            yield return new WaitForSeconds(timeBetweenSpawns);
+        }
+
+        isSpawningWave = false;
         CheckWaveCompletion();
     }
 
     public void EnemyDied(IEnemy enemy)
     {
         if (PlayerHealth.GameOver || enemy == null) return;
-
+            
         if (aliveEnemies.Contains(enemy))
         {
             aliveEnemies.Remove(enemy);
         }
 
-        // UI Slider = jumlah musuh hidup + jumlah musuh yang belum di-spawn
         if (enemySlider != null)
             enemySlider.value = aliveEnemies.Count + enemiesLeftToSpawn;
 
