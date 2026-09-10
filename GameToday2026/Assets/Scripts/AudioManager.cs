@@ -47,6 +47,11 @@ public class AudioManager : MonoBehaviour
         BGM.Play();
     }
 
+    public void StopBGM()
+    {
+        BGM.Stop();
+    }
+
     public void playMainMenuBGM()
     {
         BGM.clip = MainMenuBGM;

@@ -2,6 +2,7 @@
     <ui:VisualElement style="flex-grow: 1;">
         <ui:Label text="Project" name="Title" style="font-size: 150px; -unity-font-style: bold;"/>
         <ui:Button text="Play" name="PlayButton" style="width: 400px; height: 100px; font-size: 50px;"/>
+        <ui:Button text="Credits" name="CreditsButton" style="width: 400px; height: 100px; font-size: 50px;"/>
         <ui:Button text="Quit" name="QuitButton" style="width: 400px; height: 100px; font-size: 50px;"/>
     </ui:VisualElement>
 </ui:UXML>
