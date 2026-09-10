@@ -115,7 +115,7 @@ TextureImporter:
         serializedVersion: 2
         x: 744
         y: 1265
-        width: 1058
+        width: 130
         height: 130
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -127,6 +127,28 @@ TextureImporter:
       bones: []
       spriteID: fd8dfd87cac3095409ea52ca837306e3
       internalID: -1956964417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ADMIRABLE_1
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 1270
+        width: 887
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f5e67275919f7249866d6da6c700ae9
+      internalID: 1201316439
       vertices: []
       indices: 
       edges: []

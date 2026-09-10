@@ -113,12 +113,12 @@ TextureImporter:
       name: BENEFICIAL_0
       rect:
         serializedVersion: 2
-        x: 736
-        y: 1258
-        width: 1066
-        height: 146
+        x: 738
+        y: 1261
+        width: 130
+        height: 130
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -127,6 +127,28 @@ TextureImporter:
       bones: []
       spriteID: 7fe94acad2972b945ac4120c3e92fc8f
       internalID: 72753068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BENEFICIAL_1
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 1263
+        width: 866
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 211cc45f39e46fd4d8a081cc068122d4
+      internalID: -478208664
       vertices: []
       indices: 
       edges: []
@@ -146,6 +168,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       BENEFICIAL_0: 72753068
+      BENEFICIAL_1: -478208664
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -113,12 +113,12 @@ TextureImporter:
       name: SSATISFCTORY_0
       rect:
         serializedVersion: 2
-        x: 743
-        y: 1261
-        width: 1063
-        height: 121
+        x: 738
+        y: 1259
+        width: 130
+        height: 130
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -127,6 +127,28 @@ TextureImporter:
       bones: []
       spriteID: eb4a57e0602b7e444af56926f1d91eac
       internalID: -1832377685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SSATISFCTORY_1
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 1264
+        width: 885
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 430cb854435b44d4ebfd0f42217230a1
+      internalID: -2126142716
       vertices: []
       indices: 
       edges: []
@@ -146,6 +168,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       SSATISFCTORY_0: -1832377685
+      SSATISFCTORY_1: -2126142716
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

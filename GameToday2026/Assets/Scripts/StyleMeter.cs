@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class StyleMeter : MonoBehaviour
@@ -12,7 +11,34 @@ public class StyleMeter : MonoBehaviour
 
     [Header("UI")]
     public Slider styleSlider;
-    public TextMeshProUGUI rankText;
+
+    public Image rankTextImage;
+    public Image rankLetterImage;
+
+    [Header("DEFECTIVE")]
+    public Sprite defectiveTextSprite;
+    public Sprite defectiveLetterSprite;
+
+    [Header("CONCERNING")]
+    public Sprite concerningTextSprite;
+    public Sprite concerningLetterSprite;
+
+    [Header("BENEFICIAL")]
+    public Sprite beneficialTextSprite;
+    public Sprite beneficialLetterSprite;
+
+    [Header("ADMIRABLE")]
+    public Sprite admirableTextSprite;
+    public Sprite admirableLetterSprite;
+
+    [Header("SUPERB")]
+    public Sprite superbTextSprite;
+    public Sprite superbLetterSprite;
+
+    [Header("SSATISFACTORY")]
+    public Sprite ssatisfactoryTextSprite;
+    public Sprite ssatisfactoryLetterSprite;
+
 
     void Awake()
     {
@@ -64,10 +90,62 @@ public class StyleMeter : MonoBehaviour
             styleSlider.value = currentStylePoints;
         }
 
-        if (rankText != null)
+        UpdateRankImages();
+    }
+
+    void UpdateRankImages()
+    {
+        if (rankTextImage == null || rankLetterImage == null)
+            return;
+
+        if (currentStylePoints >= 26)
         {
-            rankText.text = GetRankName();
+            SetRank(
+                ssatisfactoryTextSprite,
+                ssatisfactoryLetterSprite
+            );
         }
+        else if (currentStylePoints >= 21)
+        {
+            SetRank(
+                superbTextSprite,
+                superbLetterSprite
+            );
+        }
+        else if (currentStylePoints >= 16)
+        {
+            SetRank(
+                admirableTextSprite,
+                admirableLetterSprite
+            );
+        }
+        else if (currentStylePoints >= 11)
+        {
+            SetRank(
+                beneficialTextSprite,
+                beneficialLetterSprite
+            );
+        }
+        else if (currentStylePoints >= 6)
+        {
+            SetRank(
+                concerningTextSprite,
+                concerningLetterSprite
+            );
+        }
+        else
+        {
+            SetRank(
+                defectiveTextSprite,
+                defectiveLetterSprite
+            );
+        }
+    }
+
+    void SetRank(Sprite textSprite, Sprite letterSprite)
+    {
+        rankTextImage.sprite = textSprite;
+        rankLetterImage.sprite = letterSprite;
     }
 
     public string GetRankName()

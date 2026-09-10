@@ -113,12 +113,12 @@ TextureImporter:
       name: CONCERNING_0
       rect:
         serializedVersion: 2
-        x: 733
-        y: 1241
-        width: 961
-        height: 155
+        x: 740
+        y: 1260
+        width: 130
+        height: 130
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -127,6 +127,28 @@ TextureImporter:
       bones: []
       spriteID: 900252d1e0cfe554684a55b651ba043f
       internalID: 1782990832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CONCERNING_1
+      rect:
+        serializedVersion: 2
+        x: 929
+        y: 1252
+        width: 772
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0f0b5a766734b84dbf0f86ebfd6d6cf
+      internalID: -204907299
       vertices: []
       indices: 
       edges: []
@@ -146,6 +168,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       CONCERNING_0: 1782990832
+      CONCERNING_1: -204907299
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
