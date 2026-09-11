@@ -99,6 +99,7 @@ public class GameOverPanel : MonoBehaviour
 
     public void playAgain()
     {
+        Time.timeScale = 1f;
         if (isLoading)
             return;
 

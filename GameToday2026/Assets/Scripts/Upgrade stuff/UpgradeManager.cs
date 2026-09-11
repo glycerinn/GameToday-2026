@@ -31,6 +31,11 @@ public class UpgradeManager : MonoBehaviour
         UpgradeSelectionActive = false;
     }
 
+    public static void ResetUpgradeState()
+    {
+        UpgradeSelectionActive = false;
+    }
+
     public void ShowUpgradeChoices()
     {
         UpgradeSelectionActive = true;

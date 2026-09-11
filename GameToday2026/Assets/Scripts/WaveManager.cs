@@ -14,6 +14,7 @@ public class WaveManager : MonoBehaviour
     public GameOverPanel GamePanel;
     public UpgradeManager upgradeManager;
     public DialogueRunner dialogueRunner;
+    public DialogueCharacter dialogueCharacter;
     public MapManager mapManager;
     public PlayerReset playerReset;
 
@@ -48,6 +49,9 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        PlayerHealth.ResetGameState();
+        UpgradeManager.ResetUpgradeState();
+        
         if (waveSlider != null)
         {
             waveSlider.minValue = 0;
@@ -65,7 +69,9 @@ public class WaveManager : MonoBehaviour
         if (dialogueRunner != null && !string.IsNullOrEmpty(introDialogueNode))
         {
             dialogueRunner.StartDialogue(introDialogueNode);
+            dialogueCharacter.ShowCharacter();
             yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
+            dialogueCharacter.HideCharacter();
         }
 
         DialogueActive = false;
@@ -197,11 +203,13 @@ public class WaveManager : MonoBehaviour
         if (dialogueRunner != null && !string.IsNullOrEmpty(wave.upgradeDialogueNode))
         {
             DialogueActive = true;
+            dialogueCharacter.ShowCharacter();
             if (AudioManager.instance != null) AudioManager.instance.playDialogueBGM();
 
             dialogueRunner.StartDialogue(wave.upgradeDialogueNode);
             yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
 
+            dialogueCharacter.HideCharacter();
             DialogueActive = false;
             if (AudioManager.instance != null) AudioManager.instance.playGameBGM();
         }

@@ -24,6 +24,11 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthUI();
     }
 
+    public static void ResetGameState()
+    {
+        GameOver = false;
+    }
+
     public void takeDamage(float damage)
     {
         if (GameOver)
