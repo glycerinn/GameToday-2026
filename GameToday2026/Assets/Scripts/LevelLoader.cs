@@ -33,6 +33,7 @@ public class LevelLoader : MonoBehaviour
 
     public void StartStory()
     {
+        PlayerPrefs.SetInt("GameCompleted", 0);
         PlayerPrefs.SetInt("Endless", 0);
         PlayerPrefs.Save();
 

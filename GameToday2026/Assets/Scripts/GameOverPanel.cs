@@ -61,8 +61,14 @@ public class GameOverPanel : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("Endless", 0) == 1)
         {
+            PlayerPrefs.SetInt("GameCompleted", 1);
+            PlayerPrefs.Save();
+
             Time.timeScale = 1f;
-            levelLoader.LoadMainMenu();
+
+            if (levelLoader != null)
+                levelLoader.LoadMainMenu();
+
             return;
         }
 
