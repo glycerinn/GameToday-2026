@@ -20,6 +20,7 @@ public class WaveManager : MonoBehaviour
 
     [Header("Dialogue")]
     public string introDialogueNode = "GameIntro";
+    public string finalDialogueNode = "MainGame4";
     public string introDialogueNodetwo = "Endless";
     public static bool DialogueActive { get; private set; }
 
@@ -269,14 +270,45 @@ public class WaveManager : MonoBehaviour
 
             if (currentWaveIndex >= waves.Length - 1)
             {
-                Debug.Log("FINAL WAVE COMPLETE!");
-                LoadEndingCutscene();
+                StartCoroutine(FinishStory());
                 return;
             }
 
             StartCoroutine(BeginUpgradeSelection());
         }
     }   
+
+    private IEnumerator FinishStory()
+    {
+        changingWave = true;
+
+        yield return new WaitForSeconds(delayBeforeUpgrades);
+
+        DialogueActive = true;
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.playDialogueBGM();
+
+        if (dialogueRunner != null && !string.IsNullOrEmpty(finalDialogueNode))
+        {
+            dialogueRunner.StartDialogue(finalDialogueNode);
+
+            if (dialogueCharacter != null)
+                dialogueCharacter.ShowCharacter();
+
+            yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
+
+            if (dialogueCharacter != null)
+                dialogueCharacter.HideCharacter();
+        }
+
+        DialogueActive = false;
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.playGameBGM();
+
+        LoadEndingCutscene();
+    }
 
     private void LoadEndingCutscene()
     {
