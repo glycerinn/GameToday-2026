@@ -1,20 +1,115 @@
 ﻿title: GameIntro
 ---
-This is an intro!
+Welcome M347? Can you see me?
+Good, good
+Dr. CERBERUS: I am Dr. CERBERUS. Your observer and partner in science.
+Dr. CERBERUS: And you are M347, our last hope.
+Dr. CERBERUS: As you can see, you are equipped with a hammer and a shotgun for transversal
+Dr. CERBERUS: You move by.. swinging your hammer by using your \[ MOUSE \] and shooting its implemented shotgun by clicking \[ LMB \].
+
+Dr. CERBERUS: One more thing however, we have a major malfunction towards your hammer. You will always slip if you’re just swinging your hammer randomly.
+
+Dr. CERBERUS: Instead, try to utilize your shotgun. It has a knockback advantage, giving you extra movement leverage.
+
+Dr. CERBERUS: We also implemented an extra feature for you, a timestop mechanism. When you shoot your shotgun, you will stop time, in a short time, to aim at enemies in time. It is still a prototype however, so beware.
+
+
+Dr. CERBERUS: We are testing ANYTHING at this point. I don’t have to tell you the whole reason, you already know it. 
+
+Dr. CERBERUS: We almost got wiped out after the end of that damn war against The Xeno Machinae. You'll have to fight, survive and adapt.
+
+Dr. CERBERUS: If this experiment works, it might save our species from our own demise.
+
+Dr. CERBERUS: Do you understand?
+
+Dr. CERBERUS: Oh right, you have a fully functioning brain but no method of communicating back
+
+Dr. CERBERUS: Blink twice if you understand.
+
+…
+
+Dr. CERBERUS: I'll take that as a yes.
+
+Dr. CERBERUS: Good luck M347, I have high hopes for you. Shoot your weapon whenever you’re ready.
+
+Dr. CERBERUS: NOW LET THE TEST COMMENCE! 
+
 ===
 title: MainGame1
 ---
-This is an example of a Yarn Spinner script. Write your dialogue here!
+Dr. CERBERUS: That was a promising performance M347
+
+Dr. CERBERUS: Did you know where you got your number, three-four-seven?
+
+Dr. CERBERUS: There were three hundred forty seven that came before you. With every iteration I believed that it would be the one to save us. 
+
+Dr. CERBERUS: Don’t disappoint us M347
+
+Dr. CERBERUS: Initiate difficulty 2. 
+
 ===
 title: MainGame2
 ---
-Two his is an example of a Yarn Spinner script. Write your dialogue here!
+Dr. CERBERUS: Excellent M347!
+
+Dr. CERBERUS: Performance ratings are quite moderate, increasing the difficulty.
+
+Dr. CERBERUS: We are just getting started. 
+
 ===
 title: MainGame3
 ---
-Another example!
+Dr. CERBERUS: Impressive, but not yet enough, M347
+
+Dr. CERBERUS: It’s cumbersome calling you by your designated name
+
+Dr. CERBERUS: What if I call you Emmy?
+
+Dr. CERBERUS: Yeah, Emmy. I like the sound of that. I have a good feeling about you. 
+
+Dr. CERBERUS: The next wave will be brutal
+
+Dr. CERBERUS: Give it your all, Emmy.
+
+Dr. CERBERUS: Initiate difficulty 4.
+
 ===
 title: MainGame4
 ---
-i'm the final dialogue!
+Dr. CERBERUS: Wow, I can’t believe this. 
+
+Dr. CERBERUS: You actually survived difficulty 4, no other prototypes made it pass. 
+
+Dr. CERBERUS: Holy crap, this is insane. You might be the one, Emmy. 
+
+Dr. CERBERUS: No, I shouldn’t get my hopes up. 
+
+Dr. CERBERUS: Eventually you’ll fail too like the rest and we will have to build a new M-series. 
+
+Dr. CERBERUS: But with each failure, I know we are closer to our impossible goal
+
+Dr. CERBERUS: That day is still light years away though. 
+
+Dr. CERBERUS: h, are you waiting for the next difficulty?
+
+Dr. CERBERUS: There’s no more, that is the end of the training regime. No prototype had made it past the 4th difficulty so we never made more. 
+
+Dr. CERBERUS: Be assured your serial number will be etched in the books.
+
+Dr. CERBERUS: Congrats for being the first, Emmy.
+
+Dr. CERBERUS: Now i’ll have to get back to my colleagues, It’s time for us to develop more difficulties
+
+Dr. CERBERUS: This is big news for the people…
+
+===
+title: Endless
+---
+Dr. CERBERUS: Did you think this was the end?
+
+Dr. CERBERUS: Silly you, the end is never the end.
+
+Dr. CERBERUS: So what happens after the end?
+
+Dr. CERBERUS: ENDLESS TRAINING TILL THE END OF TIME!!!
 ===

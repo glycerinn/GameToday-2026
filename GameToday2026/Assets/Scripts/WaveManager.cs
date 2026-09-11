@@ -25,6 +25,9 @@ public class WaveManager : MonoBehaviour
     [Header("Waves")]
     public WaveSO[] waves;
 
+    [Header("Endless Wave")]
+    public WaveSO endlessWave;
+
     [Header("UI")]
     public TextMeshProUGUI nextWaveText;
     public Slider enemySlider;
@@ -51,7 +54,7 @@ public class WaveManager : MonoBehaviour
     {
         PlayerHealth.ResetGameState();
         UpgradeManager.ResetUpgradeState();
-        
+
         if (waveSlider != null)
         {
             waveSlider.minValue = 0;

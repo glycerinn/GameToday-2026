@@ -28,19 +28,6 @@ public class VideoPlayerScript : MonoBehaviour
         audioManager.StopBGM();
         SkipButton.SetActive(false);
         StartCoroutine(ShowSkipButton());
-        videoPlayer.loopPointReached += LoadNextScene;
-        videoPlayer.Play();
-    }
-
-    public void LoadNextScene(VideoPlayer videoPlayer)
-    {
-        if (isLoading)
-            return;
-
-        isLoading = true;
-        videoPlayer.Stop();
-
-        levelLoader.LoadGame();
     }
 
     public IEnumerator ShowSkipButton()
@@ -69,10 +56,5 @@ public class VideoPlayerScript : MonoBehaviour
         videoPlayer.Stop();
 
         levelLoader.LoadMainMenu();
-    }
-
-    void OnDestroy()
-    {
-        videoPlayer.loopPointReached -= LoadNextScene;
     }
 }
