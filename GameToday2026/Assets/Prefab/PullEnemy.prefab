@@ -198,4 +198,4 @@ MonoBehaviour:
   minHeightAboveGround: 1.5
   obstacleAvoidSpeed: 10
   pullSpeed: 20
-  pullDuration: 0.4
+  pullDuration: 0.1
