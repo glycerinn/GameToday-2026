@@ -162,7 +162,7 @@ MonoBehaviour:
   bulletSpeed: 3
   moveSpeed: 0.2
   pullSpeed: 20
-  pullDuration: 0.4
+  pullDuration: 0.1
 --- !u!1 &7917572411060126607
 GameObject:
   m_ObjectHideFlags: 0
