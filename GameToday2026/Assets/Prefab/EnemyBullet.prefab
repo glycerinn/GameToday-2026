@@ -274,4 +274,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBullet
   playerHealth: {fileID: 0}
-  bulletDamage: 30
+  bulletDamage: 15
