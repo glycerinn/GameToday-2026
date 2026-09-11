@@ -158,7 +158,7 @@ MonoBehaviour:
   maxHealth: 30
   firePoint: {fileID: 7709817936564701597}
   enemyBulletPrefab: {fileID: 4202520897893467608, guid: 83c198290c8549e45bd6bccb64af5fd0, type: 3}
-  shootDelay: 0.5
+  shootDelay: 0.75
   bulletSpeed: 3
   moveSpeed: 0.2
   pullSpeed: 20
