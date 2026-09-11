@@ -59,14 +59,19 @@ public class GameOverPanel : MonoBehaviour
 
     public void ShowLose()
     {
+        if (PlayerPrefs.GetInt("Endless", 0) == 1)
+        {
+            Time.timeScale = 1f;
+            levelLoader.LoadMainMenu();
+            return;
+        }
+
         Debug.Log("SHOW LOSE");
 
         AudioManager audio = GetAudioManager();
 
         if (audio != null)
-        {
             audio.playGameOverBGM();
-        }
 
         if (resultText != null)
             resultText.text = "YOU LOSE!";
@@ -77,6 +82,7 @@ public class GameOverPanel : MonoBehaviour
 
     public void backtoMenu()
     {
+        Time.timeScale = 1f;
         if (isLoading)
             return;
 

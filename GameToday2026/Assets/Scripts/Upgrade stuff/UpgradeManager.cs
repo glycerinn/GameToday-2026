@@ -8,6 +8,7 @@ public class UpgradeManager : MonoBehaviour
     [Header("Upgrades")]
     public UpgradeSO[] availableUpgrades;
     private List<UpgradeSO> chosenUpgrades = new List<UpgradeSO>();
+    private static List<UpgradeSO> savedUpgrades = new List<UpgradeSO>();
 
     [Header("UI")]
     public GameObject upgradePanel;
@@ -106,6 +107,10 @@ public class UpgradeManager : MonoBehaviour
 
         UpgradeSO selectedUpgrade = currentChoices[selectedIndex];
         chosenUpgrades.Add(selectedUpgrade);
+
+        if (!savedUpgrades.Contains(selectedUpgrade))
+            savedUpgrades.Add(selectedUpgrade);
+
         ApplyUpgrade(selectedUpgrade);
 
         UpgradeSelectionActive = false;
@@ -113,6 +118,12 @@ public class UpgradeManager : MonoBehaviour
 
         if (WaveManager.Instance != null)
             WaveManager.Instance.UpgradeSelected();
+    }
+
+    public void ApplySavedUpgrades()
+    {
+        foreach (UpgradeSO upgrade in savedUpgrades)
+            ApplyUpgrade(upgrade);
     }
 
     void ApplyUpgrade(UpgradeSO upgrade)

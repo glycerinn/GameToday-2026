@@ -20,6 +20,7 @@ public class WaveManager : MonoBehaviour
 
     [Header("Dialogue")]
     public string introDialogueNode = "GameIntro";
+    public string introDialogueNodetwo = "Endless";
     public static bool DialogueActive { get; private set; }
 
     [Header("Waves")]
@@ -55,13 +56,86 @@ public class WaveManager : MonoBehaviour
         PlayerHealth.ResetGameState();
         UpgradeManager.ResetUpgradeState();
 
+        if (PlayerPrefs.GetInt("Endless", 0) == 1)
+        {
+            StartCoroutine(StartEndlessGame());
+            return;
+        }
+
         if (waveSlider != null)
         {
             waveSlider.minValue = 0;
             waveSlider.maxValue = waves.Length;
             waveSlider.value = 0;
         }
+
         StartCoroutine(StartGame());
+    }
+
+    private IEnumerator StartEndlessGame()
+    {
+        if (waveSlider != null)
+        {
+            waveSlider.minValue = 0;
+            waveSlider.maxValue = 1;
+            waveSlider.value = 1;
+        }
+
+        if (upgradeManager != null)
+            upgradeManager.ApplySavedUpgrades();
+
+        DialogueActive = true;
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.playDialogueBGM();
+
+        if (dialogueRunner != null && !string.IsNullOrEmpty(introDialogueNodetwo))
+        {
+            dialogueRunner.StartDialogue(introDialogueNodetwo);
+
+            if (dialogueCharacter != null)
+                dialogueCharacter.ShowCharacter();
+
+            yield return new WaitUntil(() => !dialogueRunner.IsDialogueRunning);
+
+            if (dialogueCharacter != null)
+                dialogueCharacter.HideCharacter();
+        }
+
+        DialogueActive = false;
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.playGameBGM();
+
+        StartEndlessWave();
+    }
+
+    void StartEndlessWave()
+    {
+        if (endlessWave == null)
+        {
+            Debug.LogError("Endless Wave is not assigned!");
+            return;
+        }
+
+        changingWave = false;
+        aliveEnemies.Clear();
+
+        int totalEnemies = 0;
+
+        foreach (var data in endlessWave.enemies)
+            totalEnemies += data.amount;
+
+        enemiesLeftToSpawn = totalEnemies;
+
+        if (enemySlider != null)
+        {
+            enemySlider.minValue = 0;
+            enemySlider.maxValue = totalEnemies;
+            enemySlider.value = totalEnemies;
+        }
+
+        StartCoroutine(SpawnWaveRoutine(endlessWave));
     }
 
     IEnumerator StartGame()
@@ -186,15 +260,27 @@ public class WaveManager : MonoBehaviour
         {
             changingWave = true;
 
+            if (PlayerPrefs.GetInt("Endless", 0) == 1)
+            {
+                changingWave = false;
+                StartEndlessWave();
+                return;
+            }
+
             if (currentWaveIndex >= waves.Length - 1)
             {
                 Debug.Log("FINAL WAVE COMPLETE!");
-                if (nextWaveText != null) GamePanel.ShowWin();
+                LoadEndingCutscene();
                 return;
             }
 
             StartCoroutine(BeginUpgradeSelection());
         }
+    }   
+
+    private void LoadEndingCutscene()
+    {
+        LevelLoader.instance.LoadScene("EndCutscene");
     }
 
     IEnumerator BeginUpgradeSelection()

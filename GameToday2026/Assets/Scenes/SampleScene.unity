@@ -4973,11 +4973,13 @@ MonoBehaviour:
   mapManager: {fileID: 1821370872}
   playerReset: {fileID: 1471674940}
   introDialogueNode: GameIntro
+  introDialogueNodetwo: Endless
   waves:
   - {fileID: 11400000, guid: a886b44fbf5f78b46923e5365baa78d4, type: 2}
   - {fileID: 11400000, guid: 3771c1bb1deaae6408e299b26730ea8b, type: 2}
   - {fileID: 11400000, guid: b7828da4a5c4fae4eb8532e80769c128, type: 2}
   - {fileID: 11400000, guid: 332258d5edda3ce4b9d97d556e336ae3, type: 2}
+  endlessWave: {fileID: 11400000, guid: 54a12b0aeba83064597d6ccd141c063b, type: 2}
   nextWaveText: {fileID: 1510081681}
   enemySlider: {fileID: 228181841}
   waveSlider: {fileID: 845245868}

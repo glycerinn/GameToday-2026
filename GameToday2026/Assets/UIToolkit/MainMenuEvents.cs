@@ -16,6 +16,7 @@ public class MainMenuEvents : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale=1f;
         audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
         uIDocument = GetComponent<UIDocument>();
@@ -41,7 +42,7 @@ public class MainMenuEvents : MonoBehaviour
         audioManager.playClickSFX();
         Time.timeScale = 1f;
 
-        levelLoader.LoadGame();
+        levelLoader.StartStory();
     }
 
     private void OnCredits(ClickEvent evt)

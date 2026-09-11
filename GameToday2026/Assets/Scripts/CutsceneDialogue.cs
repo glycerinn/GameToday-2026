@@ -12,30 +12,29 @@ public class CutsceneDialogue : MonoBehaviour
 
     public float typingSpeed = 0.05f;
 
-    [Header("Scene")]
-    public string gameSceneName = "SideScroller";
-
     private int currentLine;
     private Coroutine typingCoroutine;
 
     private bool isTyping;
-    private bool isTransitioning; // NEW
+    private bool isTransitioning;
 
     private string currentText;
 
     private TextMeshProUGUI currentTextObject;
 
-    private AudioManager audioManager;
     private LevelLoader levelLoader;
 
-    public void Awake()
+    private void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
-        GameObject loaderObject = GameObject.FindGameObjectWithTag("LevelLoader");
+        levelLoader = LevelLoader.instance;
 
-        if (loaderObject != null)
+        if (levelLoader == null)
         {
-            levelLoader = loaderObject.GetComponent<LevelLoader>();
+            GameObject loaderObject =
+                GameObject.FindGameObjectWithTag("LevelLoader");
+
+            if (loaderObject != null)
+                levelLoader = loaderObject.GetComponent<LevelLoader>();
         }
     }
 
@@ -46,45 +45,35 @@ public class CutsceneDialogue : MonoBehaviour
 
     private void Update()
     {
-        // Ignore clicks once scene transition has started
         if (isTransitioning)
             return;
 
         if (Input.GetMouseButtonDown(0))
-        {
             HandleClick();
-        }
     }
 
     private void HandleClick()
     {
-        // Finish current text first
         if (isTyping)
         {
             StopCoroutine(typingCoroutine);
-
             currentTextObject.text = currentText;
             isTyping = false;
-
             return;
         }
 
-        // Move to next dialogue
         currentLine++;
 
-        // More dialogue remaining
         if (currentLine < dialogues.Length)
         {
             ShowDialogue();
         }
-        // All dialogue finished
         else
         {
-            // LOCK INPUT IMMEDIATELY
             isTransitioning = true;
 
-            Debug.Log("Cutscene finished. Loading game scene...");
-            levelLoader.LoadGame();
+            if (levelLoader != null)
+                levelLoader.LoadGame();
         }
     }
 
@@ -92,29 +81,24 @@ public class CutsceneDialogue : MonoBehaviour
     {
         currentText = dialogues[currentLine];
 
-        GameObject newLine = Instantiate(
-            dialogueLinePrefab,
-            dialogueContainer
-        );
+        GameObject newLine =
+            Instantiate(dialogueLinePrefab, dialogueContainer);
 
         currentTextObject =
             newLine.GetComponent<TextMeshProUGUI>();
 
-        typingCoroutine = StartCoroutine(
-            TypeDialogue(currentText)
-        );
+        typingCoroutine =
+            StartCoroutine(TypeDialogue(currentText));
     }
 
     private IEnumerator TypeDialogue(string text)
     {
         isTyping = true;
-
         currentTextObject.text = "";
 
         foreach (char letter in text)
         {
             currentTextObject.text += letter;
-
             yield return new WaitForSeconds(typingSpeed);
         }
 

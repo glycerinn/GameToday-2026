@@ -31,13 +31,27 @@ public class LevelLoader : MonoBehaviour
         LoadScene("SampleScene");
     }
 
+    public void StartStory()
+    {
+        PlayerPrefs.SetInt("Endless", 0);
+        PlayerPrefs.Save();
+
+        LoadScene("Cutscene");
+    }
+
     public void LoadMainMenu()
     {
+        PlayerPrefs.SetInt("Endless", 0);
+        PlayerPrefs.Save();
+
         LoadScene("MainMenu");
     }
 
     public void RetryGame()
     {
+        PlayerPrefs.SetInt("Endless", 0);
+        PlayerPrefs.Save();
+
         LoadScene("SampleScene");
     }
 
@@ -56,9 +70,7 @@ public class LevelLoader : MonoBehaviour
         Time.timeScale = 1f;
 
         if (animator != null)
-        {
             animator.SetTrigger("FadeIn");
-        }
 
         yield return new WaitForSecondsRealtime(fadeDuration);
 
@@ -67,9 +79,7 @@ public class LevelLoader : MonoBehaviour
         yield return null;
 
         if (animator != null)
-        {
             animator.SetTrigger("FadeOut");
-        }
 
         yield return new WaitForSecondsRealtime(fadeDuration);
 

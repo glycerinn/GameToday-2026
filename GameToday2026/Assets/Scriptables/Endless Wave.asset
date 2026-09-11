@@ -22,4 +22,4 @@ MonoBehaviour:
     amount: 9999
   - enemyPrefab: {fileID: 2331333494245029229, guid: 42c8d29515d51f54f8d0b8df80dd39e8, type: 3}
     amount: 9999
-  upgradeDialogueNode: MainGame5
+  upgradeDialogueNode: Endless
